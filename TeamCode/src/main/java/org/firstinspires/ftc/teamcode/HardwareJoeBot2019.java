@@ -93,10 +93,17 @@ public class HardwareJoeBot2019 {
     static final double WHEEL_DIAMETER_INCHES = 4.0;
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.14159);
+
     static final double LIFT_THREADS_PER_INCH = 0.948;
     static final double LIFT_GEAR_REDUCTION = 1;
     static final double LIFT_COUNTS_PER_MOTOR_REV = 4.0;
     static final double LIFT_COUNTS_PER_INCH = (LIFT_THREADS_PER_INCH * LIFT_GEAR_REDUCTION * LIFT_COUNTS_PER_MOTOR_REV);
+
+    static final double INTAKE_GEAR_REDUCTION = 1;
+    static final double INTAKE_COUNTS_PER_MOTOR_REV = 4.0;
+    static final double INTAKE_COUNTS_PER_INCH = (INTAKE_GEAR_REDUCTION * INTAKE_COUNTS_PER_MOTOR_REV);
+
+
     /* Constructor */
     public HardwareJoeBot2019() {
 
@@ -685,10 +692,40 @@ public class HardwareJoeBot2019 {
 
 
         }
-    } public void BlockIntake(){
+    }
+
+
+ public void BlockIntake(double inches){
+
+    int newintake1Target;
+
+    int newintake2Target;
+
+
+        newintake1Target = intake1.getCurrentPosition() + (int) (inches *  INTAKE_COUNTS_PER_INCH);
+        newintake2Target = intake2.getCurrentPosition() + (int) (inches *  INTAKE_COUNTS_PER_INCH);
+
+        // Send target Positions to motors
+        motor0.setTargetPosition(newintake1Target);
+        motor1.setTargetPosition(newintake2Target);
+
+        // Set Robot to RUN_TO_POSITION mode
+        setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        // Reset the runtime
+        runtime.reset();
+
+
+
+        }
+
+
 
     }
-}
+
+
+
+
 
 
 

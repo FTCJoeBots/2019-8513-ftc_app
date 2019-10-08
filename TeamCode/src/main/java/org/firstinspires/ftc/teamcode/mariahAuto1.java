@@ -88,11 +88,6 @@ public class mariahAuto1 extends LinearOpMode {
 
 
 
-        telemetry.addLine("move1 has started");
-
-        //move1
-
-        robot.moveInches(25,1,60);
 
 
 
