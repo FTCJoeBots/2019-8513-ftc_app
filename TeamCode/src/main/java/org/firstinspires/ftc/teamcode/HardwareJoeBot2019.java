@@ -52,6 +52,9 @@ public class HardwareJoeBot2019 {
     public DcMotor motor3 = null; // Right Rear
     public DcMotor liftMotor = null;
 
+    // Declare Servos
+    public Servo foundationServo = null; //Servo for foundation
+
     // Declare Sensors
     public BNO055IMU imu;                  // The IMU sensor object
 
@@ -96,6 +99,10 @@ public class HardwareJoeBot2019 {
     static final double LIFT_GEAR_REDUCTION = 1;
     static final double LIFT_COUNTS_PER_MOTOR_REV = 4.0;
     static final double LIFT_COUNTS_PER_INCH = (LIFT_THREADS_PER_INCH * LIFT_GEAR_REDUCTION * LIFT_COUNTS_PER_MOTOR_REV);
+
+    static final double FOUNDATION_MAX_POS = 0.98;
+    static final double FOUNDATION_MIN_POS = 0.01;
+
     /* Constructor */
     public HardwareJoeBot2019() {
 
@@ -114,6 +121,8 @@ public class HardwareJoeBot2019 {
         motor2 = hwMap.dcMotor.get("motor2");
         motor3 = hwMap.dcMotor.get("motor3");
         liftMotor = hwMap.dcMotor.get("liftMotor");
+        //foundationServo = hwMap.get(Servo.class, "foundationServo");
+        foundationServo.setPosition(FOUNDATION_MAX_POS);
 
         //liftBucketMotor = hwMap.dcMotor.get("liftBucketMotor");
         //mainBucketMotor = hwMap.dcMotor.get("mainBucketMotor");
@@ -677,6 +686,18 @@ public class HardwareJoeBot2019 {
             // Set the motors back to standard mode
             setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    public void openFoundation (){
+
+        foundationServo.setPosition(FOUNDATION_MAX_POS);
+
+    }
+
+    public void closeFoundation (){
+
+        foundationServo.setPosition(FOUNDATION_MAX_POS);
     }
 }
 
