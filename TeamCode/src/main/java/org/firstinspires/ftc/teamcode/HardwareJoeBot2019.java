@@ -51,7 +51,8 @@ public class HardwareJoeBot2019 {
     public DcMotor motor2 = null; // Left Rear
     public DcMotor motor3 = null; // Right Rear
     public DcMotor liftMotor = null;
-
+    public DcMotor intake1 = null;
+    public DcMotor intake2 = null;
     // Declare Sensors
     public BNO055IMU imu;                  // The IMU sensor object
 
@@ -114,7 +115,8 @@ public class HardwareJoeBot2019 {
         motor2 = hwMap.dcMotor.get("motor2");
         motor3 = hwMap.dcMotor.get("motor3");
         liftMotor = hwMap.dcMotor.get("liftMotor");
-
+        intake1 = hwMap.dcMotor.get("intake");
+        intake2 = hwMap.dcMotor.get("intake");
         //liftBucketMotor = hwMap.dcMotor.get("liftBucketMotor");
         //mainBucketMotor = hwMap.dcMotor.get("mainBucketMotor");
         //intakeMotor = hwMap.dcMotor.get("intakeMotor");
@@ -125,13 +127,16 @@ public class HardwareJoeBot2019 {
         motor2.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
         motor3.setDirection(DcMotor.Direction.FORWARD); // Set to FORWARD if using AndyMark motors
         liftMotor.setDirection(DcMotor.Direction.FORWARD); //set to FORWARD (UP) if using AndyMark motors
-
+        intake1.setDirection(DcMotor.Direction.FORWARD);
+        intake2.setDirection(DcMotor.Direction.FORWARD);
         // Set all motors to zero power
         motor0.setPower(0);
         motor1.setPower(0);
         motor2.setPower(0);
         motor3.setPower(0);
         liftMotor.setPower(0);
+        intake1.setPower(0);
+        intake2.setPower(0);
         myOpMode.telemetry.addLine("initialized motor power to zero");
         myOpMode.telemetry.update();
 
@@ -146,7 +151,8 @@ public class HardwareJoeBot2019 {
         motor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motor3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
+        intake1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        intake2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         // IMU Initializaiton
         // Set up the parameters with which we will use our IMU. Note that integration
         // algorithm here just reports accelerations to the logcat log; it doesn't actually
@@ -676,9 +682,14 @@ public class HardwareJoeBot2019 {
 
             // Set the motors back to standard mode
             setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+
         }
+    } public void BlockIntake(){
+
     }
 }
+
 
 
 
