@@ -50,10 +50,6 @@ public class HardwareJoeBot2019 {
     public DcMotor motor1 = null; // Right Front
     public DcMotor motor2 = null; // Left Rear
     public DcMotor motor3 = null; // Right Rear
-    public DcMotor liftMotor = null;
-
-    // Declare Servos
-    public Servo foundationServo = null; //Servo for foundation
 
     // Declare Sensors
     public BNO055IMU imu;                  // The IMU sensor object
@@ -120,27 +116,18 @@ public class HardwareJoeBot2019 {
         motor1 = hwMap.dcMotor.get("motor1");
         motor2 = hwMap.dcMotor.get("motor2");
         motor3 = hwMap.dcMotor.get("motor3");
-        liftMotor = hwMap.dcMotor.get("liftMotor");
-        //foundationServo = hwMap.get(Servo.class, "foundationServo");
-        foundationServo.setPosition(FOUNDATION_MAX_POS);
-
-        //liftBucketMotor = hwMap.dcMotor.get("liftBucketMotor");
-        //mainBucketMotor = hwMap.dcMotor.get("mainBucketMotor");
-        //intakeMotor = hwMap.dcMotor.get("intakeMotor");
 
         // Set Default Motor Directions
         motor0.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
         motor1.setDirection(DcMotor.Direction.FORWARD); // Set to FORWARD if using AndyMark motors
         motor2.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
         motor3.setDirection(DcMotor.Direction.FORWARD); // Set to FORWARD if using AndyMark motors
-        liftMotor.setDirection(DcMotor.Direction.FORWARD); //set to FORWARD (UP) if using AndyMark motors
 
         // Set all motors to zero power
         motor0.setPower(0);
         motor1.setPower(0);
         motor2.setPower(0);
         motor3.setPower(0);
-        liftMotor.setPower(0);
         myOpMode.telemetry.addLine("initialized motor power to zero");
         myOpMode.telemetry.update();
 
@@ -154,7 +141,6 @@ public class HardwareJoeBot2019 {
         motor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motor3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // IMU Initializaiton
         // Set up the parameters with which we will use our IMU. Note that integration
@@ -662,43 +648,6 @@ public class HardwareJoeBot2019 {
     }
     ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public void liftMotorInches(double inches, double power){
-
-        // Declare needed variables
-        int newliftMotorTarget;
-
-
-        // Check to make sure the OpMode is still active; If it isn't don't run the method
-        if (myOpMode.opModeIsActive()) {
-
-            // Determine new target positions for each wheel
-            newliftMotorTarget = liftMotor.getCurrentPosition() + (int) (inches * LIFT_COUNTS_PER_INCH);
-
-            // Send target Positions to motors
-            liftMotor.setTargetPosition(newliftMotorTarget);
-
-            // Set Robot to RUN_TO_POSITION mode
-            setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            // Reset the runtime
-            runtime.reset();
-
-            // Set the motors back to standard mode
-            setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////
-    public void openFoundation (){
-
-        foundationServo.setPosition(FOUNDATION_MAX_POS);
-
-    }
-
-    public void closeFoundation (){
-
-        foundationServo.setPosition(FOUNDATION_MAX_POS);
-    }
 }
 
 
