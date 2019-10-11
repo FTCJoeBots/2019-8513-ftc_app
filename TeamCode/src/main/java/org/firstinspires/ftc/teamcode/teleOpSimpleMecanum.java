@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.configuration.Utility;
 
 /**
  *import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -38,10 +39,14 @@ public class teleOpSimpleMecanum extends LinearOpMode {
     double power1;
     double power2;
     double power3;
-    double liftpower;
     double max;
+    double liftMotor;
+    double armMotor;
+    double lift; //lift arm up
+    double extend; //extend arm forward
 
     HardwareJoeBot2019 robot = new HardwareJoeBot2019();
+    Robot8513 utility = new Robot8513();
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -50,6 +55,7 @@ public class teleOpSimpleMecanum extends LinearOpMode {
 
 
         robot.init(hardwareMap, this);
+        utility.init(hardwareMap, this);
 
 
         waitForStart();
@@ -66,6 +72,8 @@ public class teleOpSimpleMecanum extends LinearOpMode {
             //right = gamepad1.left_stick_x;
             right = -gamepad1.left_trigger + gamepad1.right_trigger;
             clockwise = gamepad1.right_stick_x;
+            lift = -gamepad2.right_stick_y; //arn up and down
+            extend = -gamepad2.left_stick_y; //arm forward and backward
 
             // Add a tuning constant "K" to tune rotate axis sensitivity
             k = .6;
@@ -77,6 +85,10 @@ public class teleOpSimpleMecanum extends LinearOpMode {
             power1 = forward - clockwise - right;
             power2 = forward + clockwise - right;
             power3 = forward - clockwise + right;
+            liftMotor = lift + 0 + 0;
+            armMotor = extend + 0 + 0;
+
+
 
             // Normalize Wheel speeds so that no speed exceeds 1.0
             max = Math.abs(power0);
@@ -101,15 +113,8 @@ public class teleOpSimpleMecanum extends LinearOpMode {
             robot.motor1.setPower(power1);
             robot.motor2.setPower(power2);
             robot.motor3.setPower(power3);
-
-
-
-
-
-            //------------------------------------------
-            //-------------------------------------------
-
-
+            utility.liftMotor.setPower(liftMotor);
+            utility.armMotor.setPower(armMotor);
 
             // Update Telemetry
             telemetry.addData(">", "Press Stop to end test.");

@@ -47,6 +47,7 @@ public class Robot8513 {
 
     // Declare Motors
     public DcMotor liftMotor = null;
+    public DcMotor armMotor = null;
     public DcMotor wristMotor = null;
 
     // Declare Servos
@@ -76,7 +77,7 @@ public class Robot8513 {
 
     static final double WRIST_COUNTS_PER_MOTOR_REV = 4.0;
     static final double WRIST_OUTPUT_COUNTS = 288;
-    static final double WRIST_COUNTS_PER_INCH = ();
+    static final double WRIST_COUNTS_PER_INCH = (12);
 
     static final double FOUNDATION_MAX_POS = 0.98;
     static final double FOUNDATION_MIN_POS = 0.01;
@@ -91,14 +92,17 @@ public class Robot8513 {
 
         // Define and Initialize Motors
         liftMotor = hwMap.dcMotor.get("liftMotor");
+        armMotor = hwMap.dcMotor.get("armMotor");
 
         foundationServo.setPosition(FOUNDATION_MAX_POS);
 
         // Set Default Motor Directions
         liftMotor.setDirection(DcMotor.Direction.FORWARD); //set to FORWARD (UP) if using AndyMark motors
+        armMotor.setDirection(DcMotor.Direction.FORWARD); //set to FORWARD if using AndyMark motors
 
         // Set all motors to zero power
         liftMotor.setPower(0);
+        armMotor.setPower(0);
         myOpMode.telemetry.addLine("initialized motor power to zero");
         myOpMode.telemetry.update();
 
@@ -109,6 +113,7 @@ public class Robot8513 {
         // Set all drive motors to run without encoders.
         // May want to switch to  RUN_USING_ENCODERS during autonomous
         liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
     }
 
@@ -135,6 +140,33 @@ public class Robot8513 {
 
             // Set the motors back to standard mode
             liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        }
+    }
+
+    //Move arm forward and backward
+    public void ExtendArmInches(double inches, double power) {
+
+        // Declare needed variables
+        int newarmMotorTarget;
+
+
+        // Check to make sure the OpMode is still active; If it isn't don't run the method
+        if (myOpMode.opModeIsActive()) {
+
+            // Determine new target positions for each wheel
+            newarmMotorTarget = liftMotor.getCurrentPosition() + (int) (inches * LIFT_COUNTS_PER_INCH);
+
+            // Send target Positions to motors
+            armMotor.setTargetPosition(newarmMotorTarget);
+
+            // Set Robot to RUN_TO_POSITION mode
+            armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            // Reset the runtime
+            runtime.reset();
+
+            // Set the motors back to standard mode
+            armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
     }
 
