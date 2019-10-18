@@ -52,6 +52,7 @@ public class Robot8513 {
 
     // Declare Servos
     public Servo foundationServo = null; // Servo for foundation
+    public Servo grabberServo = null; //Servo for grabber
 
     // Declare Sensors
     //public BNO055IMU imu;                  // The IMU sensor object
@@ -82,6 +83,9 @@ public class Robot8513 {
     static final double FOUNDATION_MAX_POS = 0.98;
     static final double FOUNDATION_MIN_POS = 0.01;
 
+    static final double GRABBER_MAX_POS = 1;
+    static final double GRABBER_MIN_POS = 0.02;
+
 
     /* Initialize standard Hardware interfaces */
     public void init(HardwareMap ahwMap, LinearOpMode opMode) {
@@ -94,7 +98,8 @@ public class Robot8513 {
         liftMotor = hwMap.dcMotor.get("liftMotor");
         armMotor = hwMap.dcMotor.get("armMotor");
 
-        foundationServo.setPosition(FOUNDATION_MAX_POS);
+        foundationServo.setPosition(FOUNDATION_MIN_POS);
+        grabberServo.setPosition(GRABBER_MAX_POS);
 
         // Set Default Motor Directions
         liftMotor.setDirection(DcMotor.Direction.FORWARD); //set to FORWARD (UP) if using AndyMark motors
@@ -180,6 +185,16 @@ public class Robot8513 {
         foundationServo.setPosition(FOUNDATION_MAX_POS);
 
 
+    }
+
+    // opens servo for foundation
+    public void openGrabber(){
+        grabberServo.setPosition(GRABBER_MAX_POS);
+    }
+
+    // closes servo for foundation
+    public void closeGrabber(){
+        grabberServo.setPosition(GRABBER_MIN_POS);
     }
 }
 
