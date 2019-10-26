@@ -50,9 +50,7 @@ public class HardwareJoeBot2019 {
     public DcMotor motor1 = null; // Right Front
     public DcMotor motor2 = null; // Left Rear
     public DcMotor motor3 = null; // Right Rear
-    public DcMotor liftMotor = null;
-    public DcMotor intake1 = null;
-    public DcMotor intake2 = null;
+
     // Declare Sensors
     public BNO055IMU imu;                  // The IMU sensor object
 
@@ -94,14 +92,6 @@ public class HardwareJoeBot2019 {
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.14159);
 
-    static final double LIFT_THREADS_PER_INCH = 0.948;
-    static final double LIFT_GEAR_REDUCTION = 1;
-    static final double LIFT_COUNTS_PER_MOTOR_REV = 4.0;
-    static final double LIFT_COUNTS_PER_INCH = (LIFT_THREADS_PER_INCH * LIFT_GEAR_REDUCTION * LIFT_COUNTS_PER_MOTOR_REV);
-
-    static final double INTAKE_GEAR_REDUCTION = 1;
-    static final double INTAKE_COUNTS_PER_MOTOR_REV = 4.0;
-    static final double INTAKE_COUNTS_PER_INCH = (INTAKE_GEAR_REDUCTION * INTAKE_COUNTS_PER_MOTOR_REV);
 
 
     /* Constructor */
@@ -121,9 +111,7 @@ public class HardwareJoeBot2019 {
         motor1 = hwMap.dcMotor.get("motor1");
         motor2 = hwMap.dcMotor.get("motor2");
         motor3 = hwMap.dcMotor.get("motor3");
-        liftMotor = hwMap.dcMotor.get("liftMotor");
-        intake1 = hwMap.dcMotor.get("intake");
-        intake2 = hwMap.dcMotor.get("intake");
+
         //liftBucketMotor = hwMap.dcMotor.get("liftBucketMotor");
         //mainBucketMotor = hwMap.dcMotor.get("mainBucketMotor");
         //intakeMotor = hwMap.dcMotor.get("intakeMotor");
@@ -133,17 +121,13 @@ public class HardwareJoeBot2019 {
         motor1.setDirection(DcMotor.Direction.FORWARD); // Set to FORWARD if using AndyMark motors
         motor2.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
         motor3.setDirection(DcMotor.Direction.FORWARD); // Set to FORWARD if using AndyMark motors
-        liftMotor.setDirection(DcMotor.Direction.FORWARD); //set to FORWARD (UP) if using AndyMark motors
-        intake1.setDirection(DcMotor.Direction.FORWARD);
-        intake2.setDirection(DcMotor.Direction.FORWARD);
+
         // Set all motors to zero power
         motor0.setPower(0);
         motor1.setPower(0);
         motor2.setPower(0);
         motor3.setPower(0);
-        liftMotor.setPower(0);
-        intake1.setPower(0);
-        intake2.setPower(0);
+
         myOpMode.telemetry.addLine("initialized motor power to zero");
         myOpMode.telemetry.update();
 
@@ -157,9 +141,7 @@ public class HardwareJoeBot2019 {
         motor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motor3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        intake1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        intake2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         // IMU Initializaiton
         // Set up the parameters with which we will use our IMU. Note that integration
         // algorithm here just reports accelerations to the logcat log; it doesn't actually
@@ -180,12 +162,12 @@ public class HardwareJoeBot2019 {
 
         //////////////////////////////////  INITIALIZE VUFORIA AND TENSOR FLOW OBJECT DETECTOR
         //initialize vuforia here because vuforia takes a while to init
-        initVuforia();
-        if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
-            initTfod();
-        } else {
-            myOpMode.telemetry.addData("Sorry!", "This device is not compatible with TFOD");
-        }
+        //initVuforia();
+        //if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
+        //    initTfod();
+        //} else {
+        //    myOpMode.telemetry.addData("Sorry!", "This device is not compatible with TFOD");
+        //}
         ////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -663,68 +645,11 @@ public class HardwareJoeBot2019 {
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
 
         // Loading trackables is not necessary for the Tensor Flow Object Detection engine.
-    }
-    ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public void liftMotorInches(double inches, double power){
-
-        // Declare needed variables
-        int newliftMotorTarget;
-
-
-        // Check to make sure the OpMode is still active; If it isn't don't run the method
-        if (myOpMode.opModeIsActive()) {
-
-            // Determine new target positions for each wheel
-            newliftMotorTarget = liftMotor.getCurrentPosition() + (int) (inches * LIFT_COUNTS_PER_INCH);
-
-            // Send target Positions to motors
-            liftMotor.setTargetPosition(newliftMotorTarget);
-
-            // Set Robot to RUN_TO_POSITION mode
-            setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            // Reset the runtime
-            runtime.reset();
-
-            // Set the motors back to standard mode
-            setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-
-        }
-    }
-
-
- public void BlockIntake(double inches){
-
-    int newintake1Target;
-
-    int newintake2Target;
-
-
-        newintake1Target = intake1.getCurrentPosition() + (int) (inches *  INTAKE_COUNTS_PER_INCH);
-        newintake2Target = intake2.getCurrentPosition() + (int) (inches *  INTAKE_COUNTS_PER_INCH);
-
-        // Send target Positions to motors
-        motor0.setTargetPosition(newintake1Target);
-        motor1.setTargetPosition(newintake2Target);
-
-        // Set Robot to RUN_TO_POSITION mode
-        setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        // Reset the runtime
-        runtime.reset();
-
-
-
-        }
-
-
+        ///////////////////////////////////////////////////////////////////////////////////////////////////
 
     }
-
-
-
+}
 
 
 
