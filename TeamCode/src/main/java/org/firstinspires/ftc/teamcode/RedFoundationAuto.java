@@ -39,7 +39,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 // Starting at the edge of the red bulding zone tape towards the wall
 
-@Autonomous(name="Sample 1", group="Pushbot")
+@Autonomous(name="RedFoundationAuto", group="Pushbot")
 //@Disabled
 public class RedFoundationAuto extends LinearOpMode {
 
@@ -56,14 +56,15 @@ public class RedFoundationAuto extends LinearOpMode {
         telemetry.update();
 
         robot.init(hardwareMap,this);
+        utility.init(hardwareMap, this);
 
         waitForStart();
 
         robot.moveRobot(0, 28, 0);
-        utility.openFoundation();
+        utility.grabFoundation();
 
         robot.moveRobot(0, 28, 0);
-        utility.closeFoundation();
+        utility.releaseFoundation();
         robot.moveInches(50, .5, 10);
 
 
@@ -73,3 +74,4 @@ public class RedFoundationAuto extends LinearOpMode {
     }
 
 }
+

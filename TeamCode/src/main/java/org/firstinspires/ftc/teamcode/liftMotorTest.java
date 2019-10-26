@@ -37,14 +37,13 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * This is sample code used to explain how to write an autonomous code
  *
  */
-// Starting at the edge of the blue bulding zone tape towards the wall
 
-@Autonomous(name="BlueFoundationAuto", group="Pushbot")
+@Autonomous(name="GraceliftMotorTest", group="Pushbot")
 //@Disabled
-public class BlueFoundationAuto extends LinearOpMode {
+public class liftMotorTest extends LinearOpMode {
 
     /* Declare OpMode members. */
-    HardwareJoeBot2019      robot   = new HardwareJoeBot2019();   // Use a Pushbot's hardware
+    //HardwareJoeBot2018      robot   = new HardwareJoeBot2018();   // Use a Pushbot's hardware
     Robot8513 utility = new Robot8513();
     private ElapsedTime     runtime = new ElapsedTime();
 
@@ -55,19 +54,21 @@ public class BlueFoundationAuto extends LinearOpMode {
         telemetry.addLine("Press > to Start");
         telemetry.update();
 
-        robot.init(hardwareMap,this);
+        //robot.init(hardwareMap,this);
         utility.init(hardwareMap, this);
 
         waitForStart();
 
-        robot.moveRobot(0, -28, 0);
-        utility.grabFoundation();
+        utility.liftMotorInches(8, 0.8);
 
-        robot.moveRobot(0, -28, 0);
-        utility.releaseFoundation();
-        robot.moveInches(50, .5, 10);
+        while (utility.liftMotor.isBusy() && opModeIsActive()) {
+            telemetry.addData("Lift Position", utility.liftMotor.getCurrentPosition());
+            telemetry.update();
+        }
 
 
+        telemetry.addData("Lift Position", utility.liftMotor.getCurrentPosition());
+        telemetry.update();
 
 
 

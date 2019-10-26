@@ -52,7 +52,7 @@ public class Robot8513 {
 
     // Declare Servos
     public Servo foundationServo = null; // Servo for foundation
-    public Servo grabberServo = null; //Servo for grabber
+    public Servo clampServo = null; //Servo for grabber
 
     // Declare Sensors
     //public BNO055IMU imu;                  // The IMU sensor object
@@ -73,18 +73,18 @@ public class Robot8513 {
     // Declare Static members for calculations
     static final double LIFT_THREADS_PER_INCH = 0.948;
     static final double LIFT_GEAR_REDUCTION = 1;
-    static final double LIFT_COUNTS_PER_MOTOR_REV = 4.0;
+    static final double LIFT_COUNTS_PER_MOTOR_REV = 145.6;
     static final double LIFT_COUNTS_PER_INCH = (LIFT_THREADS_PER_INCH * LIFT_GEAR_REDUCTION * LIFT_COUNTS_PER_MOTOR_REV);
 
     static final double WRIST_COUNTS_PER_MOTOR_REV = 4.0;
     static final double WRIST_OUTPUT_COUNTS = 288;
-    static final double WRIST_COUNTS_PER_INCH = (12);
+    //static final double WRIST_COUNTS_PER_INCH = (12);
 
-    static final double FOUNDATION_MAX_POS = 0.98;
-    static final double FOUNDATION_MIN_POS = 0.01;
+    static final double FOUNDATION_DOWN = 0.75;
+    static final double FOUNDATION_UP = 0.4;
 
-    static final double GRABBER_MAX_POS = 1;
-    static final double GRABBER_MIN_POS = 0.02;
+    static final double CLAMP_OPEN = 0.5;
+    static final double CLAMP_CLOSE = 0.75;
 
 
     /* Initialize standard Hardware interfaces */
@@ -97,9 +97,13 @@ public class Robot8513 {
         // Define and Initialize Motors
         liftMotor = hwMap.dcMotor.get("liftMotor");
         armMotor = hwMap.dcMotor.get("armMotor");
+        wristMotor = hwMap.dcMotor.get("wristMotor");
 
-        foundationServo.setPosition(FOUNDATION_MIN_POS);
-        grabberServo.setPosition(GRABBER_MAX_POS);
+        foundationServo = hwMap.servo.get("foundationServo");
+        clampServo = hwMap.servo.get("clampServo");
+
+        foundationServo.setPosition(FOUNDATION_UP);
+        clampServo.setPosition(CLAMP_OPEN);
 
         // Set Default Motor Directions
         liftMotor.setDirection(DcMotor.Direction.FORWARD); //set to FORWARD (UP) if using AndyMark motors
@@ -108,17 +112,19 @@ public class Robot8513 {
         // Set all motors to zero power
         liftMotor.setPower(0);
         armMotor.setPower(0);
+        wristMotor.setPower(0);
         myOpMode.telemetry.addLine("initialized motor power to zero");
         myOpMode.telemetry.update();
 
-        myOpMode.telemetry.addLine("initialized other motor power to zero");
-        myOpMode.telemetry.update();
+       // myOpMode.telemetry.addLine("initialized other motor power to zero");
+       // myOpMode.telemetry.update();
 
 
         // Set all drive motors to run without encoders.
         // May want to switch to  RUN_USING_ENCODERS during autonomous
         liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wristMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
     }
 
@@ -140,6 +146,8 @@ public class Robot8513 {
             // Set Robot to RUN_TO_POSITION mode
             liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+            liftMotor.setPower(power);
+
             // Reset the runtime
             runtime.reset();
 
@@ -154,7 +162,6 @@ public class Robot8513 {
         // Declare needed variables
         int newarmMotorTarget;
 
-
         // Check to make sure the OpMode is still active; If it isn't don't run the method
         if (myOpMode.opModeIsActive()) {
 
@@ -167,6 +174,8 @@ public class Robot8513 {
             // Set Robot to RUN_TO_POSITION mode
             armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+            armMotor.setPower(power);
+
             // Reset the runtime
             runtime.reset();
 
@@ -175,26 +184,43 @@ public class Robot8513 {
         }
     }
 
-        // opens servo for foundation
-    public void openFoundation() {
-        foundationServo.setPosition(FOUNDATION_MAX_POS);
+    //Moves wist up and down
+    public void moveWrist(double degrees) {
+
+        // Declare needed variables
+        int newwristMotorTarget;
+
+        // Check to make sure the OpMode is still active; If it isn't don't run the method
+        if (myOpMode.opModeIsActive()){
+
+            // Determine new target positions for each wheel
+            newwristMotorTarget = wristMotor.getCurrentPosition();
+        }
     }
 
-        // closes servo for foundation
-    public void closeFoundation () {
-        foundationServo.setPosition(FOUNDATION_MAX_POS);
+        // grabs the foundation
+    public void grabFoundation() {
 
+        foundationServo.setPosition(FOUNDATION_DOWN);
+    }
+
+        // releases the foundation
+    public void releaseFoundation () {
+
+        foundationServo.setPosition(FOUNDATION_UP);
 
     }
 
-    // opens servo for foundation
-    public void openGrabber(){
-        grabberServo.setPosition(GRABBER_MAX_POS);
+    // opens servo for clamp
+    public void openClamp(){
+
+        clampServo.setPosition(CLAMP_OPEN);
     }
 
-    // closes servo for foundation
-    public void closeGrabber(){
-        grabberServo.setPosition(GRABBER_MIN_POS);
+    // closes servo for clamp
+    public void closeClamp(){
+
+        clampServo.setPosition(CLAMP_CLOSE);
     }
 }
 

@@ -91,13 +91,10 @@ public class HardwareJoeBot2019 {
     static final double WHEEL_DIAMETER_INCHES = 4.0;
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.14159);
-    static final double LIFT_THREADS_PER_INCH = 0.948;
-    static final double LIFT_GEAR_REDUCTION = 1;
-    static final double LIFT_COUNTS_PER_MOTOR_REV = 4.0;
-    static final double LIFT_COUNTS_PER_INCH = (LIFT_THREADS_PER_INCH * LIFT_GEAR_REDUCTION * LIFT_COUNTS_PER_MOTOR_REV);
-
-    static final double FOUNDATION_MAX_POS = 0.98;
-    static final double FOUNDATION_MIN_POS = 0.01;
+ //   static final double LIFT_THREADS_PER_INCH = 0.948;
+ //   static final double LIFT_GEAR_REDUCTION = 1;
+ //   static final double LIFT_COUNTS_PER_MOTOR_REV = 4.0;
+//    static final double LIFT_COUNTS_PER_INCH = (LIFT_THREADS_PER_INCH * LIFT_GEAR_REDUCTION * LIFT_COUNTS_PER_MOTOR_REV);
 
     /* Constructor */
     public HardwareJoeBot2019() {

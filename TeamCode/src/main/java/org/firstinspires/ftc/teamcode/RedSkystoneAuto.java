@@ -37,9 +37,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * This is sample code used to explain how to write an autonomous code
  *
  */
-// Starting at the edge of the red bulding zone tape towards the wall
+// Starting at the edge of the blue depot
 
-@Autonomous(name="Sample 1", group="Pushbot")
+@Autonomous(name="RedSkystonAuto", group="Pushbot")
 //@Disabled
 public class RedSkystoneAuto extends LinearOpMode {
 
@@ -62,6 +62,7 @@ public class RedSkystoneAuto extends LinearOpMode {
         telemetry.update();
 
         robot.init(hardwareMap, this);
+        utility.init(hardwareMap, this);
 
         waitForStart();
 
@@ -86,10 +87,10 @@ public class RedSkystoneAuto extends LinearOpMode {
             xValue = coords[0]/25.4;
             robot.moveRobot(0, yValue, 0);
             utility.ExtendArmInches(xValue + 1.5, .3);
-            utility.closeGrabber();
+            utility.closeClamp();
             robot.moveInches(20, .5, 5);
             robot.moveRobot(0, 27, 0);
-            utility.openGrabber();
+            utility.openClamp();
 
         }
 
