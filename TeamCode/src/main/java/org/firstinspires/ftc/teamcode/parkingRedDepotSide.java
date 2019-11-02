@@ -62,7 +62,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name="MariahAutoTest", group="JoeBot")
 //@Disabled
-public class justParking8513 extends LinearOpMode {
+public class parkingRedDepotSide extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwareJoeBot2019 robot = new HardwareJoeBot2019();

@@ -1,8 +1,11 @@
+
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.configuration.Utility;
 
 /**
  *import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -25,7 +28,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  * Fine tune the movements and LOWER the TIME OF MOVEMENT in autonomous.
  * List of issues at Comp(1)-> https://docs.google.com/a/stjoebears.com/spreadsheets/d/1r_liipKBU7GHfONdxq9E6d4f7zikcCuXwDL2bsQfwm0/edit?usp=sharing
  *G-Sheet of time VS Heading for autonomous -> https://docs.google.com/a/stjoebears.com/spreadsheets/d/1pqv0iN94fFd5KvX1YIWP7z39HgpURXsscn0zPujs1q4/edit?usp=sharing
-*/
+ */
 @TeleOp(name="Simple Mecanum Drive", group="TeleOp")
 
 public class teleOpSimpleMecanum extends LinearOpMode {
@@ -38,10 +41,17 @@ public class teleOpSimpleMecanum extends LinearOpMode {
     double power1;
     double power2;
     double power3;
-    double liftpower;
     double max;
+    double liftPower;
+    double armPower;
+    // double lift; //lift arm up
+    // double extendPower; //extend arm forward
+    double clamp;
+    double foundation;
 
-    HardwareJoeBot2018 robot = new HardwareJoeBot2018();
+
+    HardwareJoeBot2019 robot = new HardwareJoeBot2019();
+    Robot8513 utility = new Robot8513();
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -50,6 +60,7 @@ public class teleOpSimpleMecanum extends LinearOpMode {
 
 
         robot.init(hardwareMap, this);
+        utility.init(hardwareMap, this);
 
 
         waitForStart();
@@ -66,6 +77,11 @@ public class teleOpSimpleMecanum extends LinearOpMode {
             //right = gamepad1.left_stick_x;
             right = -gamepad1.left_trigger + gamepad1.right_trigger;
             clockwise = gamepad1.right_stick_x;
+            liftPower = -gamepad2.right_stick_y; //arn up and down
+            armPower = -gamepad2.left_stick_y; //arm forward and backward
+            clamp = -gamepad2.right_trigger; //opens and closes clamp
+            foundation = -gamepad2.left_trigger; //opens and closes foundation servo
+
 
             // Add a tuning constant "K" to tune rotate axis sensitivity
             k = .6;
@@ -77,6 +93,7 @@ public class teleOpSimpleMecanum extends LinearOpMode {
             power1 = forward - clockwise - right;
             power2 = forward + clockwise - right;
             power3 = forward - clockwise + right;
+
 
             // Normalize Wheel speeds so that no speed exceeds 1.0
             max = Math.abs(power0);
@@ -101,15 +118,8 @@ public class teleOpSimpleMecanum extends LinearOpMode {
             robot.motor1.setPower(power1);
             robot.motor2.setPower(power2);
             robot.motor3.setPower(power3);
-
-
-
-
-
-            //------------------------------------------
-            //-------------------------------------------
-
-
+            utility.liftMotor.setPower(liftPower); //lift up and down the arm
+            utility.armMotor.setPower(armPower); //Extend and contract the arm
 
             // Update Telemetry
             telemetry.addData(">", "Press Stop to end test.");
@@ -122,6 +132,20 @@ public class teleOpSimpleMecanum extends LinearOpMode {
                 telemetry.addLine("Neither button is pressed");
             }
 
+            if (clamp > 0) {
+                utility.openClamp();
+
+            } else if (clamp == 0) {
+                utility.closeClamp();
+            }
+
+            if (foundation > 0) {
+                utility.openFoundation();
+            } else if (foundation == 0){
+                utility.closeFoundation();
+            }
+
+
             telemetry.update();
             idle();
 
@@ -133,3 +157,4 @@ public class teleOpSimpleMecanum extends LinearOpMode {
         }//end while
     }
 }
+
