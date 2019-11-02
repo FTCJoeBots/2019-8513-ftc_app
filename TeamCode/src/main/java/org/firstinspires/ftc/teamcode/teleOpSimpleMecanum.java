@@ -1,3 +1,4 @@
+
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -27,7 +28,7 @@ import com.qualcomm.robotcore.hardware.configuration.Utility;
  * Fine tune the movements and LOWER the TIME OF MOVEMENT in autonomous.
  * List of issues at Comp(1)-> https://docs.google.com/a/stjoebears.com/spreadsheets/d/1r_liipKBU7GHfONdxq9E6d4f7zikcCuXwDL2bsQfwm0/edit?usp=sharing
  *G-Sheet of time VS Heading for autonomous -> https://docs.google.com/a/stjoebears.com/spreadsheets/d/1pqv0iN94fFd5KvX1YIWP7z39HgpURXsscn0zPujs1q4/edit?usp=sharing
-*/
+ */
 @TeleOp(name="Simple Mecanum Drive", group="TeleOp")
 
 public class teleOpSimpleMecanum extends LinearOpMode {
@@ -43,6 +44,7 @@ public class teleOpSimpleMecanum extends LinearOpMode {
     double max;
     double liftPower;
     double armPower;
+
     double wristPower;
    // double lift; //lift arm up
    // double extendPower; //extend arm forward
@@ -56,6 +58,12 @@ public class teleOpSimpleMecanum extends LinearOpMode {
     boolean PrevClampOpenY = false;
     boolean CurrClampCloseX = false;
     boolean PrevclampCloseX = false;
+
+    // double lift; //lift arm up
+    // double extendPower; //extend arm forward
+    double clamp;
+    double foundation;
+
 
 
     HardwareJoeBot2019 robot = new HardwareJoeBot2019();
@@ -87,12 +95,14 @@ public class teleOpSimpleMecanum extends LinearOpMode {
             clockwise = gamepad1.right_stick_x;
             liftPower = -gamepad2.right_stick_y; //arn up and down
             armPower = -gamepad2.left_stick_y; //arm forward and backward
+
             wristPower = -gamepad2.left_stick_x; //move wrist up and down
 
             CurrClampOpenY = gamepad2.y;
             CurrClampCloseX = gamepad2.x;
             CurrFoundReleaseStateA = gamepad2.a;
             CurrFoundGrabStateB = gamepad2.b;
+
 
 
             // Add a tuning constant "K" to tune rotate axis sensitivity
@@ -134,6 +144,7 @@ public class teleOpSimpleMecanum extends LinearOpMode {
             utility.armMotor.setPower(armPower); //Extend and contract the arm
             utility.wristMotor.setPower(wristPower);
 
+
             // Update Telemetry
             telemetry.addData(">", "Press Stop to end test.");
 
@@ -144,6 +155,7 @@ public class teleOpSimpleMecanum extends LinearOpMode {
             } else {
                 telemetry.addLine("Neither button is pressed");
             }
+
 
             if (clampOpen > 0) {
                 utility.openClamp();
@@ -192,6 +204,7 @@ public class teleOpSimpleMecanum extends LinearOpMode {
 
 
 
+
             telemetry.update();
             idle();
 
@@ -203,3 +216,4 @@ public class teleOpSimpleMecanum extends LinearOpMode {
         }//end while
     }
 }
+

@@ -91,10 +91,7 @@ public class HardwareJoeBot2019 {
     static final double WHEEL_DIAMETER_INCHES = 4.0;
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.14159);
- //   static final double LIFT_THREADS_PER_INCH = 0.948;
- //   static final double LIFT_GEAR_REDUCTION = 1;
- //   static final double LIFT_COUNTS_PER_MOTOR_REV = 4.0;
-//    static final double LIFT_COUNTS_PER_INCH = (LIFT_THREADS_PER_INCH * LIFT_GEAR_REDUCTION * LIFT_COUNTS_PER_MOTOR_REV);
+
 
     /* Constructor */
     public HardwareJoeBot2019() {
@@ -114,32 +111,31 @@ public class HardwareJoeBot2019 {
         motor2 = hwMap.dcMotor.get("motor2");
         motor3 = hwMap.dcMotor.get("motor3");
 
+
+
         // Set Default Motor Directions
-        motor0.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
-        motor1.setDirection(DcMotor.Direction.FORWARD); // Set to FORWARD if using AndyMark motors
-        motor2.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
-        motor3.setDirection(DcMotor.Direction.FORWARD); // Set to FORWARD if using AndyMark motors
+        motor0.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
+        motor1.setDirection(DcMotor.Direction.REVERSE); // Set to FORWARD if using AndyMark motors
+        motor2.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
+        motor3.setDirection(DcMotor.Direction.REVERSE); // Set to FORWARD if using AndyMark motors
+
 
         // Set all motors to zero power
         motor0.setPower(0);
         motor1.setPower(0);
         motor2.setPower(0);
         motor3.setPower(0);
+
+
         myOpMode.telemetry.addLine("initialized motor power to zero");
         myOpMode.telemetry.update();
 
-        myOpMode.telemetry.addLine("initialized other motor power to zero");
-        myOpMode.telemetry.update();
+        setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
-        // Set all drive motors to run without encoders.
-        // May want to switch to  RUN_USING_ENCODERS during autonomous
-        motor0.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motor3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        // IMU Initializaiton
+          // IMU Initializaiton
         // Set up the parameters with which we will use our IMU. Note that integration
         // algorithm here just reports accelerations to the logcat log; it doesn't actually
         // provide positional information.
@@ -159,12 +155,12 @@ public class HardwareJoeBot2019 {
 
         //////////////////////////////////  INITIALIZE VUFORIA AND TENSOR FLOW OBJECT DETECTOR
         //initialize vuforia here because vuforia takes a while to init
-        initVuforia();
-        if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
-            initTfod();
-        } else {
-            myOpMode.telemetry.addData("Sorry!", "This device is not compatible with TFOD");
-        }
+        //initVuforia();
+        //if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
+        //    initTfod();
+        //} else {
+        //    myOpMode.telemetry.addData("Sorry!", "This device is not compatible with TFOD");
+        //}
         ////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -354,7 +350,7 @@ public class HardwareJoeBot2019 {
             myOpMode.telemetry.log().add("Ending moveInches method");
 
             // Set the motors back to standard mode
-            setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         }
 
@@ -643,9 +639,10 @@ public class HardwareJoeBot2019 {
 
         // Loading trackables is not necessary for the Tensor Flow Object Detection engine.
     }
-    ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 }
+
+
 
 
 

@@ -80,6 +80,7 @@ public class Robot8513 {
     static final double WRIST_OUTPUT_COUNTS = 288;
     //static final double WRIST_COUNTS_PER_INCH = (12);
 
+
     static final double FOUNDATION_DOWN = 0.75;
     static final double FOUNDATION_UP = 0.4;
 
@@ -102,8 +103,10 @@ public class Robot8513 {
         foundationServo = hwMap.servo.get("foundationServo");
         clampServo = hwMap.servo.get("clampServo");
 
+
         foundationServo.setPosition(FOUNDATION_UP);
         clampServo.setPosition(CLAMP_OPEN);
+
 
         // Set Default Motor Directions
         liftMotor.setDirection(DcMotor.Direction.FORWARD); //set to FORWARD (UP) if using AndyMark motors
@@ -115,9 +118,6 @@ public class Robot8513 {
         wristMotor.setPower(0);
         myOpMode.telemetry.addLine("initialized motor power to zero");
         myOpMode.telemetry.update();
-
-       // myOpMode.telemetry.addLine("initialized other motor power to zero");
-       // myOpMode.telemetry.update();
 
 
         // Set all drive motors to run without encoders.
@@ -198,6 +198,7 @@ public class Robot8513 {
         }
     }
 
+
         // grabs the foundation
     public void grabFoundation() {
 
@@ -209,13 +210,14 @@ public class Robot8513 {
 
         foundationServo.setPosition(FOUNDATION_UP);
 
+
     }
 
     // opens servo for clamp
     public void openClamp(){
 
+
         clampServo.setPosition(CLAMP_OPEN);
-    }
 
     // closes servo for clamp
     public void closeClamp(){
@@ -223,7 +225,6 @@ public class Robot8513 {
         clampServo.setPosition(CLAMP_CLOSE);
     }
 }
-
 
 
 

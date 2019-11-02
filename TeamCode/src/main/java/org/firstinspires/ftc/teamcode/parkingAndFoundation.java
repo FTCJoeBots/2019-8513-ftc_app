@@ -30,12 +30,8 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 
 /**
  * This file illustrates the concept of driving a path based on encoder counts.
@@ -64,9 +60,9 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Mariah Lift Test", group="JoeBot")
+@Autonomous(name="MariahAutoFoundation", group="JoeBot")
 //@Disabled
-public class mariahAuto1 extends LinearOpMode {
+public class parkingAndFoundation extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwareJoeBot2019 robot = new HardwareJoeBot2019();
@@ -74,31 +70,22 @@ public class mariahAuto1 extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
 
 
+
     @Override
     public void runOpMode() {
 
-        robot.init(hardwareMap,this);
+        robot.init(hardwareMap, this);
         utility.init(hardwareMap, this);
 
-       // int newDistance = robot.motor0.getCurrentPosition();
-       // robot.motor0.setTargetPosition(newDistance + 5);
-
-       // robot.motor0.getCurrentPosition();
-
         waitForStart();
-        // this op mode does nothing; just a test.
 
+        robot.moveInches(55,.5,15);
+        //robot.moveRobot(0,.5,0);
+        //utility.closeFoundation();
+        //robot.moveInches(-24,.5,6);
+        //utility.openFoundation();
+        //robot.moveRobot(0,0,5);
 
-        utility.liftMotorInches(6,.5);
-
-        while (utility.liftMotor.isBusy() && opModeIsActive()) {
-            telemetry.addData("Lift Position: ", utility.liftMotor.getCurrentPosition());
-            telemetry.update();
-        }
-
-
-        telemetry.addData("Lift Position: ", utility.liftMotor.getCurrentPosition());
-        telemetry.update();
 
 
 
