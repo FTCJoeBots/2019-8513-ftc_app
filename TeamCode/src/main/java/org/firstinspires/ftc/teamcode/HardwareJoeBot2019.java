@@ -117,10 +117,10 @@ public class HardwareJoeBot2019 {
         //intakeMotor = hwMap.dcMotor.get("intakeMotor");
 
         // Set Default Motor Directions
-        motor0.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
-        motor1.setDirection(DcMotor.Direction.FORWARD); // Set to FORWARD if using AndyMark motors
-        motor2.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
-        motor3.setDirection(DcMotor.Direction.FORWARD); // Set to FORWARD if using AndyMark motors
+        motor0.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
+        motor1.setDirection(DcMotor.Direction.REVERSE); // Set to FORWARD if using AndyMark motors
+        motor2.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
+        motor3.setDirection(DcMotor.Direction.REVERSE); // Set to FORWARD if using AndyMark motors
 
         // Set all motors to zero power
         motor0.setPower(0);
@@ -131,18 +131,11 @@ public class HardwareJoeBot2019 {
         myOpMode.telemetry.addLine("initialized motor power to zero");
         myOpMode.telemetry.update();
 
-        myOpMode.telemetry.addLine("initialized other motor power to zero");
-        myOpMode.telemetry.update();
+        setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+        setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        // Set all drive motors to run without encoders.
-        // May want to switch to  RUN_USING_ENCODERS during autonomous
-        motor0.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motor3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        // IMU Initializaiton
+          // IMU Initializaiton
         // Set up the parameters with which we will use our IMU. Note that integration
         // algorithm here just reports accelerations to the logcat log; it doesn't actually
         // provide positional information.
@@ -357,7 +350,7 @@ public class HardwareJoeBot2019 {
             myOpMode.telemetry.log().add("Ending moveInches method");
 
             // Set the motors back to standard mode
-            setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         }
 

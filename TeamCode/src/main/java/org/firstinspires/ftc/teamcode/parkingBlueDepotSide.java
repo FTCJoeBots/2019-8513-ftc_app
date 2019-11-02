@@ -62,7 +62,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name="MariahAutoFoundation", group="JoeBot")
 //@Disabled
-public class parkingAndFoundation extends LinearOpMode {
+public class parkingBlueDepotSide extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwareJoeBot2019 robot = new HardwareJoeBot2019();
@@ -70,21 +70,10 @@ public class parkingAndFoundation extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
 
 
-
     @Override
     public void runOpMode() {
-
-        robot.init(hardwareMap, this);
-        utility.init(hardwareMap, this);
-
-        waitForStart();
-
-        robot.moveInches(55,.5,15);
-        //robot.moveRobot(0,.5,0);
-        //utility.closeFoundation();
-        //robot.moveInches(-24,.5,6);
-        //utility.openFoundation();
-        //robot.moveRobot(0,0,5);
+robot.moveInches(5,.5,6);
+robot.moveRobot(0,2,0);
 
 
 

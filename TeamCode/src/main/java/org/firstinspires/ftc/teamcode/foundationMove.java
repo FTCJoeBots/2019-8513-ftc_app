@@ -74,6 +74,7 @@ public class foundationMove extends LinearOpMode {
     public void runOpMode() {
 
         robot.init(hardwareMap,this);
+        utility.init(hardwareMap,this);
 
        // int newDistance = robot.motor0.getCurrentPosition();
        // robot.motor0.setTargetPosition(newDistance + 5);
