@@ -44,10 +44,26 @@ public class teleOpSimpleMecanum extends LinearOpMode {
     double max;
     double liftPower;
     double armPower;
+
+    double wristPower;
+   // double lift; //lift arm up
+   // double extendPower; //extend arm forward
+    double clampOpen;
+    double clampClose;
+    boolean CurrFoundGrabStateB = false;
+    boolean PrevFoundGrabStateB = false;
+    boolean CurrFoundReleaseStateA = false;
+    boolean PrevFoundReleaseStateA = false;
+    boolean CurrClampOpenY = false;
+    boolean PrevClampOpenY = false;
+    boolean CurrClampCloseX = false;
+    boolean PrevclampCloseX = false;
+
     // double lift; //lift arm up
     // double extendPower; //extend arm forward
     double clamp;
     double foundation;
+
 
 
     HardwareJoeBot2019 robot = new HardwareJoeBot2019();
@@ -79,8 +95,14 @@ public class teleOpSimpleMecanum extends LinearOpMode {
             clockwise = gamepad1.right_stick_x;
             liftPower = -gamepad2.right_stick_y; //arn up and down
             armPower = -gamepad2.left_stick_y; //arm forward and backward
-            clamp = -gamepad2.right_trigger; //opens and closes clamp
-            foundation = -gamepad2.left_trigger; //opens and closes foundation servo
+
+            wristPower = -gamepad2.left_stick_x; //move wrist up and down
+
+            CurrClampOpenY = gamepad2.y;
+            CurrClampCloseX = gamepad2.x;
+            CurrFoundReleaseStateA = gamepad2.a;
+            CurrFoundGrabStateB = gamepad2.b;
+
 
 
             // Add a tuning constant "K" to tune rotate axis sensitivity
@@ -120,6 +142,8 @@ public class teleOpSimpleMecanum extends LinearOpMode {
             robot.motor3.setPower(power3);
             utility.liftMotor.setPower(liftPower); //lift up and down the arm
             utility.armMotor.setPower(armPower); //Extend and contract the arm
+            utility.wristMotor.setPower(wristPower);
+
 
             // Update Telemetry
             telemetry.addData(">", "Press Stop to end test.");
@@ -132,18 +156,53 @@ public class teleOpSimpleMecanum extends LinearOpMode {
                 telemetry.addLine("Neither button is pressed");
             }
 
-            if (clamp > 0) {
+
+            if (clampOpen > 0) {
                 utility.openClamp();
 
-            } else if (clamp == 0) {
+            } else if (clampClose > 0) {
                 utility.closeClamp();
             }
 
-            if (foundation > 0) {
-                utility.openFoundation();
-            } else if (foundation == 0){
-                utility.closeFoundation();
+            CurrFoundGrabStateB = gamepad2.b;
+            if ((CurrFoundGrabStateB == true) && (CurrFoundGrabStateB != PrevFoundGrabStateB)) {
+
+                // When the "B" button is pressed, close foundation
+
+                utility.grabFoundation();
+
             }
+            PrevFoundGrabStateB = CurrFoundGrabStateB;
+
+            CurrFoundReleaseStateA = gamepad2.a;
+            if ((CurrFoundReleaseStateA == true) && (CurrFoundReleaseStateA != PrevFoundReleaseStateA)) {
+
+                // When the "A" button is pressed, open foundation
+
+                utility.releaseFoundation();
+            }
+            PrevFoundReleaseStateA = CurrFoundReleaseStateA;
+
+            CurrClampCloseX = gamepad2.x;
+            if ((CurrClampCloseX == true) && (CurrClampCloseX != PrevclampCloseX)) {
+
+                // When the "X" button is pressed, close clamp
+
+                utility.closeClamp();
+
+            }
+            PrevclampCloseX = CurrClampCloseX;
+
+            CurrClampOpenY = gamepad2.y;
+            if ((CurrClampOpenY == true) && (CurrClampOpenY != PrevClampOpenY)) {
+
+                // When the "Y" button is pressed, open clamp
+
+                utility.openClamp();
+            }
+            PrevClampOpenY = CurrClampOpenY;
+
+
 
 
             telemetry.update();

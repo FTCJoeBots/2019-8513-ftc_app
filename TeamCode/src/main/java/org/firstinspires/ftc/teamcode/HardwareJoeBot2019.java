@@ -93,7 +93,6 @@ public class HardwareJoeBot2019 {
             (WHEEL_DIAMETER_INCHES * 3.14159);
 
 
-
     /* Constructor */
     public HardwareJoeBot2019() {
 
@@ -112,9 +111,7 @@ public class HardwareJoeBot2019 {
         motor2 = hwMap.dcMotor.get("motor2");
         motor3 = hwMap.dcMotor.get("motor3");
 
-        //liftBucketMotor = hwMap.dcMotor.get("liftBucketMotor");
-        //mainBucketMotor = hwMap.dcMotor.get("mainBucketMotor");
-        //intakeMotor = hwMap.dcMotor.get("intakeMotor");
+
 
         // Set Default Motor Directions
         motor0.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
@@ -122,16 +119,19 @@ public class HardwareJoeBot2019 {
         motor2.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         motor3.setDirection(DcMotor.Direction.REVERSE); // Set to FORWARD if using AndyMark motors
 
+
         // Set all motors to zero power
         motor0.setPower(0);
         motor1.setPower(0);
         motor2.setPower(0);
         motor3.setPower(0);
 
+
         myOpMode.telemetry.addLine("initialized motor power to zero");
         myOpMode.telemetry.update();
 
         setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
 
         setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
@@ -638,10 +638,8 @@ public class HardwareJoeBot2019 {
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
 
         // Loading trackables is not necessary for the Tensor Flow Object Detection engine.
-
-        ///////////////////////////////////////////////////////////////////////////////////////////////////
-
     }
+
 }
 
 

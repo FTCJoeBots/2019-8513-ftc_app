@@ -80,11 +80,12 @@ public class Robot8513 {
     static final double WRIST_OUTPUT_COUNTS = 288;
     //static final double WRIST_COUNTS_PER_INCH = (12);
 
-    static final double FOUNDATION_MAX_POS = 0.98;
-    static final double FOUNDATION_MIN_POS = 0.01;
 
-    static final double CLAMP_MAX_POS = 1;
-    static final double CLAMP_MIN_POS = 0.02;
+    static final double FOUNDATION_DOWN = 0.75;
+    static final double FOUNDATION_UP = 0.4;
+
+    static final double CLAMP_OPEN = 0.5;
+    static final double CLAMP_CLOSE = 0.75;
 
 
     /* Initialize standard Hardware interfaces */
@@ -102,8 +103,10 @@ public class Robot8513 {
         foundationServo = hwMap.servo.get("foundationServo");
         clampServo = hwMap.servo.get("clampServo");
 
-        foundationServo.setPosition(FOUNDATION_MAX_POS);
-        clampServo.setPosition(CLAMP_MAX_POS);
+
+        foundationServo.setPosition(FOUNDATION_UP);
+        clampServo.setPosition(CLAMP_OPEN);
+
 
         // Set Default Motor Directions
         liftMotor.setDirection(DcMotor.Direction.FORWARD); //set to FORWARD (UP) if using AndyMark motors
@@ -115,9 +118,6 @@ public class Robot8513 {
         wristMotor.setPower(0);
         myOpMode.telemetry.addLine("initialized motor power to zero");
         myOpMode.telemetry.update();
-
-        // myOpMode.telemetry.addLine("initialized other motor power to zero");
-        // myOpMode.telemetry.update();
 
 
         // Set all drive motors to run without encoders.
@@ -198,16 +198,17 @@ public class Robot8513 {
         }
     }
 
-    // opens servo for foundation
-    public void openFoundation() {
 
-        foundationServo.setPosition(FOUNDATION_MAX_POS);
+        // grabs the foundation
+    public void grabFoundation() {
+
+        foundationServo.setPosition(FOUNDATION_DOWN);
     }
 
-    // closes servo for foundation
-    public void closeFoundation () {
+        // releases the foundation
+    public void releaseFoundation () {
 
-        foundationServo.setPosition(FOUNDATION_MAX_POS);
+        foundationServo.setPosition(FOUNDATION_UP);
 
 
     }
@@ -215,13 +216,13 @@ public class Robot8513 {
     // opens servo for clamp
     public void openClamp(){
 
-        clampServo.setPosition(CLAMP_MAX_POS);
-    }
+
+        clampServo.setPosition(CLAMP_OPEN);
 
     // closes servo for clamp
     public void closeClamp(){
 
-        clampServo.setPosition(CLAMP_MIN_POS);
+        clampServo.setPosition(CLAMP_CLOSE);
     }
 }
 
