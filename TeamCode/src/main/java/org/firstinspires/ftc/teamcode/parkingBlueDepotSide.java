@@ -72,6 +72,7 @@ public class parkingBlueDepotSide extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+        robot.init(hardwareMap, this );
 robot.moveInches(5,.5,6);
 robot.moveRobot(0,2,0);
 

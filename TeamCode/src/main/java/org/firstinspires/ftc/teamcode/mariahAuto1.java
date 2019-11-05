@@ -64,8 +64,8 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Mariah Lift Test", group="JoeBot")
-//@Disabled
+@Autonomous(name="test ncxc", group="JoeBot")
+@Disabled
 public class mariahAuto1 extends LinearOpMode {
 
     /* Declare OpMode members. */
@@ -89,7 +89,7 @@ public class mariahAuto1 extends LinearOpMode {
         // this op mode does nothing; just a test.
 
 
-        utility.liftMotorInches(6,.5);
+     robot.moveInches(30,.5,8);
 
         while (utility.liftMotor.isBusy() && opModeIsActive()) {
             telemetry.addData("Lift Position: ", utility.liftMotor.getCurrentPosition());

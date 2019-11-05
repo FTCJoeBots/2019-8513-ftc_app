@@ -60,9 +60,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="MariahAutoFoundation", group="JoeBot")
+@Autonomous(name="Pick This RedFoundationAuto", group="JoeBot")
 //@Disabled
-public class parkingAndFoundation extends LinearOpMode {
+public class parkingAndFoundationRed extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwareJoeBot2019 robot = new HardwareJoeBot2019();
@@ -79,12 +79,26 @@ public class parkingAndFoundation extends LinearOpMode {
 
         waitForStart();
 
-        robot.moveInches(55,.5,15);
-        //robot.moveRobot(0,.5,0);
-        //utility.closeFoundation();
-        //robot.moveInches(-24,.5,6);
-        //utility.openFoundation();
-        //robot.moveRobot(0,0,5);
+        robot.moveInches(70,0.5,15);
+        robot.stop();
+        robot.strafeSeconds(800, 0.8);
+
+        utility.grabFoundation();
+        sleep(500);
+        robot.moveInches(-92,0.5,15);
+        sleep(700);
+
+        utility.releaseFoundation();
+        sleep(100);
+
+        robot.strafeSeconds(300, -0.5);
+
+        robot.stop();
+
+        robot.moveInches(60,.5,5);
+
+        robot.stop();
+
 
 
 

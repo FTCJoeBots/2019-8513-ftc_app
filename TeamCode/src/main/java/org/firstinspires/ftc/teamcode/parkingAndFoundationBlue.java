@@ -34,40 +34,75 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
- * This is sample code used to explain how to write an autonomous code
+ * This file illustrates the concept of driving a path based on encoder counts.
+ * It uses the common Pushbot hardware class to define the drive on the robot.
+ * The code is structured as a LinearOpMode
  *
+ * The code REQUIRES that you DO have encoders on the wheels,
+ *   otherwise you would use: PushbotAutoDriveByTime;
+ *
+ *  This code ALSO requires that the drive Motors have been configured such that a positive
+ *  power command moves them forwards, and causes the encoders to count UP.
+ *
+ *   The desired path in this example is:
+ *   - Drive forward for 48 inches
+ *   - Spin right for 12 Inches
+ *   - Drive Backwards for 24 inches
+ *   - Stop and close the claw.
+ *
+ *  The code is written using a method called: encoderDrive(speed, leftInches, rightInches, timeoutS)
+ *  that performs the actual movement.
+ *  This methods assumes that each movement is relative to the last stopping place.
+ *  There are other ways to perform encoder based moves, but this method is probably the simplest.
+ *  This code uses the RUN_TO_POSITION mode to enable the Motor controllers to generate the run profile
+ *
+ * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
+ * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Sample 2", group="Pushbot")
+@Autonomous(name="Pick This BlueFoundationAuto", group="JoeBot")
 //@Disabled
-public class autoGregDriveTest extends LinearOpMode {
+public class parkingAndFoundationBlue extends LinearOpMode {
 
     /* Declare OpMode members. */
-    HardwareJoeBot2019     robot   = new HardwareJoeBot2019();   // Use a Pushbot's hardware
+    HardwareJoeBot2019 robot = new HardwareJoeBot2019();
     Robot8513 utility = new Robot8513();
-    private ElapsedTime     runtime = new ElapsedTime();
+    private ElapsedTime runtime = new ElapsedTime();
+
 
 
     @Override
     public void runOpMode() {
 
-        telemetry.addLine("Press > to Start");
-        telemetry.update();
-
-        robot.init(hardwareMap,this);
+        robot.init(hardwareMap, this);
         utility.init(hardwareMap, this);
 
         waitForStart();
 
-        //Move forward 12 inches
+        robot.moveInches(-65,.5,15);
+        robot.stop();
+        robot.strafeSeconds(800, 0.8);
 
-        robot.moveInches(55, 0.5, 5);
+        utility.grabFoundation();
+        robot.moveInches(90,.5,15);
+        sleep(700);
 
-        telemetry.addLine("We're done. Press stop.");
-        telemetry.update();
+        utility.releaseFoundation();
+        sleep(100);
+
+        robot.strafeSeconds(300, -0.5);
+
+        robot.moveInches(-55, 0.25, 15);
+        robot.stop();
+
+
+
 
 
 
     }
 
+
 }
+
+

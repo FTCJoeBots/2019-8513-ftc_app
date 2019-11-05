@@ -118,6 +118,7 @@ public class teleOpSimpleMecanum extends LinearOpMode {
 
 
             // Normalize Wheel speeds so that no speed exceeds 1.0
+
             max = Math.abs(power0);
             if (Math.abs(power1) > max) {
                 max = Math.abs(power1);

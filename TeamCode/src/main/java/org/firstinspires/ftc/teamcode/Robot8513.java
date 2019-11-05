@@ -84,8 +84,9 @@ public class Robot8513 {
     static final double FOUNDATION_DOWN = 0.75;
     static final double FOUNDATION_UP = 0.4;
 
-    static final double CLAMP_OPEN = 0.5;
-    static final double CLAMP_CLOSE = 0.75;
+    static final double CLAMP_OPEN = 0.55;
+    static final double CLAMP_CLOSE = 1;
+
 
 
     /* Initialize standard Hardware interfaces */
@@ -191,7 +192,7 @@ public class Robot8513 {
         int newwristMotorTarget;
 
         // Check to make sure the OpMode is still active; If it isn't don't run the method
-        if (myOpMode.opModeIsActive()){
+        if (myOpMode.opModeIsActive()) {
 
             // Determine new target positions for each wheel
             newwristMotorTarget = wristMotor.getCurrentPosition();
@@ -199,14 +200,14 @@ public class Robot8513 {
     }
 
 
-        // grabs the foundation
+    // grabs the foundation
     public void grabFoundation() {
 
         foundationServo.setPosition(FOUNDATION_DOWN);
     }
 
-        // releases the foundation
-    public void releaseFoundation () {
+    // releases the foundation
+    public void releaseFoundation() {
 
         foundationServo.setPosition(FOUNDATION_UP);
 
@@ -214,16 +215,18 @@ public class Robot8513 {
     }
 
     // opens servo for clamp
-    public void openClamp(){
+    public void openClamp() {
 
 
         clampServo.setPosition(CLAMP_OPEN);
-
-    // closes servo for clamp
-    public void closeClamp(){
-
-        clampServo.setPosition(CLAMP_CLOSE);
     }
+        // closes servo for clamp
+
+        public void closeClamp() {
+
+            clampServo.setPosition(CLAMP_CLOSE);
+        }
+
 }
 
 
