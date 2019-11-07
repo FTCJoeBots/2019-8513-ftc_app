@@ -126,15 +126,15 @@ public class Robot8513 {
         // May want to switch to  RUN_USING_ENCODERS during autonomous
         liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        wristMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //wristMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
 
         //Initialize wrist position
         wristMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         wristMotor.setTargetPosition(WRIST_MIDDLE);
         wristMotor.setPower(0.3);
-        wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
     }
 
@@ -237,11 +237,13 @@ public class Robot8513 {
     }
 
     public void wristFlat(double power){
-        if (myOpMode.opModeIsActive()) {
 
+        // Immediately move wrist to the "Flat Position"
+
+        if (myOpMode.opModeIsActive()) {
             wristMotor.setTargetPosition(WRIST_MIDDLE);
             wristMotor.setPower(power);
-            wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            //wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
     }
 /*
@@ -261,18 +263,65 @@ public class Robot8513 {
     }
 */
 
-    public void wristPosition(int wristPos, double power) {
+    public void wristPosition(double power) {
 
-        if (wristPos > WRIST_UP) {
-            wristPos = WRIST_UP;
+        // This method should take in the operator control (via the power variable) which will
+        // control both how fast, and which direction the wrist moves.
+
+        // There is no need to take in "wristPos" here because we can read that from the
+        // wristMotor at any time.
+
+
+        // Since our "FLAT" position is negative, we want to DECREASE encoder values as the wrist
+        // moves down...
+
+        // Also, we're not going to map the stick directly to the wristPower. Essentially, if the stick
+        // is less than halfway moved, we'll use a low power movement, and a high power movement for
+        // more than half.
+
+        int newTargetPos;
+        double newPower;
+
+        if (power < -0.5) {
+            // move down fast
+            newTargetPos = wristMotor.getCurrentPosition() - 100;
+            newPower = 0.6;
+        } else if (power < 0 ) {
+            // move down slowly
+            newTargetPos = wristMotor.getCurrentPosition() - 30;
+            newPower = 0.3;
+        } else if (power > 0.5) {
+            // move up quickly
+            newTargetPos = wristMotor.getCurrentPosition() + 100;
+            newPower = 0.6;
+        } else if (power > 0) {
+            // move up slowly
+            newTargetPos = wristMotor.getCurrentPosition() + 30;
+            newPower = 0.3;
+        } else {
+            // power is 0
+            newTargetPos = wristMotor.getCurrentPosition();
+            newPower = 0.3;
         }
 
-        if (wristPos < WRIST_MIDDLE) {
-            wristPos = WRIST_MIDDLE;
+        // Check for min and max
+
+        if (newTargetPos > WRIST_UP) {
+            // We can't go higher than WRIST_UP
+            newTargetPos = WRIST_UP;
         }
-        wristMotor.setTargetPosition(wristPos);
-        wristMotor.setPower(power);
-        wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        if (newTargetPos < WRIST_MIDDLE) {
+            // we don't want to go below flat
+            newTargetPos = WRIST_MIDDLE;
+        }
+
+        // Apply Power and Target Position
+
+        wristMotor.setTargetPosition(newTargetPos);
+        wristMotor.setPower(newPower);
+
+
     }
 }
 

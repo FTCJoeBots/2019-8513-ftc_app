@@ -142,26 +142,15 @@ public class NewTeleop extends LinearOpMode {
             robot.motor3.setPower(power3);
             utility.liftMotor.setPower(liftPower); //lift up and down the arm
             utility.armMotor.setPower(armPower); //Extend and contract the arm
-            utility.wristMotor.setPower(wristPower);
+            //utility.wristMotor.setPower(wristPower);
 
             //Turn wrist up and down
-            int CurPos = utility.wristMotor.getCurrentPosition();
-            utility.wristPosition(CurPos,wristPower);
-
-            // Update Telemetry
-            telemetry.addData(">", "Press Stop to end test.");
+            utility.wristPosition(wristPower);
 
             if (gamepad2.right_bumper) {
                 utility.wristFlat(.5);
             }
 
-            if (gamepad1.a) {
-                telemetry.addLine("Button A is pressed");
-            } else if (gamepad1.b) {
-                telemetry.addLine("Button B is pressed");
-            } else {
-                telemetry.addLine("Neither button is pressed");
-            }
 
 
             if (clampOpen > 0) {
