@@ -78,14 +78,16 @@ public class Robot8513 {
 
     static final double WRIST_COUNTS_PER_MOTOR_REV = 4.0;
     static final double WRIST_OUTPUT_COUNTS = 288;
-    //static final double WRIST_COUNTS_PER_INCH = (12);
 
 
     static final double FOUNDATION_DOWN = 0.75;
-    static final double FOUNDATION_UP = 0.4;
+    static final double FOUNDATION_UP = -0.1;
 
-    static final double CLAMP_OPEN = 0.5;
-    static final double CLAMP_CLOSE = 0.75;
+    static final double CLAMP_OPEN = 0.55;
+    static final double CLAMP_CLOSE = 1;
+
+    static final int WRIST_MIDDLE = -950; //Wrist parallel to ground
+    static final int WRIST_UP = 0; //Wrist up
 
 
     /* Initialize standard Hardware interfaces */
@@ -124,7 +126,15 @@ public class Robot8513 {
         // May want to switch to  RUN_USING_ENCODERS during autonomous
         liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        wristMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wristMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+
+        //Initialize wrist position
+        wristMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        wristMotor.setTargetPosition(WRIST_MIDDLE);
+        wristMotor.setPower(0.3);
+        wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
     }
 
@@ -191,7 +201,7 @@ public class Robot8513 {
         int newwristMotorTarget;
 
         // Check to make sure the OpMode is still active; If it isn't don't run the method
-        if (myOpMode.opModeIsActive()){
+        if (myOpMode.opModeIsActive()) {
 
             // Determine new target positions for each wheel
             newwristMotorTarget = wristMotor.getCurrentPosition();
@@ -199,14 +209,14 @@ public class Robot8513 {
     }
 
 
-        // grabs the foundation
+    // grabs the foundation
     public void grabFoundation() {
 
         foundationServo.setPosition(FOUNDATION_DOWN);
     }
 
-        // releases the foundation
-    public void releaseFoundation () {
+    // releases the foundation
+    public void releaseFoundation() {
 
         foundationServo.setPosition(FOUNDATION_UP);
 
@@ -214,15 +224,55 @@ public class Robot8513 {
     }
 
     // opens servo for clamp
-    public void openClamp(){
-
+    public void openClamp() {
 
         clampServo.setPosition(CLAMP_OPEN);
-
-    // closes servo for clamp
-    public void closeClamp(){
+    }
+        // closes servo for clamp
+    public void closeClamp () {
 
         clampServo.setPosition(CLAMP_CLOSE);
+
+
+    }
+
+    public void wristFlat(double power){
+        if (myOpMode.opModeIsActive()) {
+
+            wristMotor.setTargetPosition(WRIST_MIDDLE);
+            wristMotor.setPower(power);
+            wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
+    }
+/*
+    public void wristPosition(double power){
+       if (myOpMode.opModeIsActive()) {
+            double CurPos = wristMotor.getCurrentPosition();
+            if (CurPos > WRIST_UP) {
+                CurPos = WRIST_UP;
+            }
+            else if (CurPos < WRIST_MIDDLE){
+                CurPos = WRIST_DOWN;
+            }
+            wristMotor.setTargetPosition(WRIST_MIDDLE);
+            wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            wristMotor.setPower(power);
+        }
+    }
+*/
+
+    public void wristPosition(int wristPos, double power) {
+
+        if (wristPos > WRIST_UP) {
+            wristPos = WRIST_UP;
+        }
+
+        if (wristPos < WRIST_MIDDLE) {
+            wristPos = WRIST_MIDDLE;
+        }
+        wristMotor.setTargetPosition(wristPos);
+        wristMotor.setPower(power);
+        wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 }
 

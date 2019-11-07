@@ -63,36 +63,36 @@ public class RedSkystoneAuto extends LinearOpMode {
 
         robot.init(hardwareMap, this);
         utility.init(hardwareMap, this);
+        I.init(hardwareMap, this);
 
         waitForStart();
 
-        robot.moveInches(18, .5, 5);
+        utility.wristFlat(.5);
+        robot.moveInches(18.5, .5, 7);
 
         double coords[] = I.skystone_cooridinates();
+        sleep(200);
         ///Distance from skystone
         ///    coords[0]
         //Amount off center of skystone
         ///    coords[1]
 
-        if (coords[0] == 777) {
-            robot.moveInches(2.5, .5, 5);
+        runtime.reset();
+
+        while (coords[0] == 777 && runtime.seconds() < 8) {
+            robot.strafeSeconds(200, -.25);
+            sleep(200);
             coords = I.skystone_cooridinates();
 
-
-
         }
 
-        else {
-            yValue = coords[1]/25.4;
-            xValue = coords[0]/25.4;
-            robot.moveRobot(0, yValue, 0);
-            utility.ExtendArmInches(xValue + 1.5, .3);
-            utility.closeClamp();
-            robot.moveInches(20, .5, 5);
-            robot.moveRobot(0, 27, 0);
-            utility.openClamp();
-
-        }
-
+        yValue = coords[1]/25.4;
+        xValue = coords[0]/25.4;
+        robot.moveRobot(0, yValue, 0);
+        utility.ExtendArmInches(xValue, .3);
+        utility.closeClamp();
+        robot.moveInches(-20, .5, 5);
+        robot.strafeSeconds(300, .5);
+        utility.openClamp();
     }
 }

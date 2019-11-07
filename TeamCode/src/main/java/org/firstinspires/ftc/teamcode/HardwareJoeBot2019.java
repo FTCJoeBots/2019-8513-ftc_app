@@ -85,7 +85,7 @@ public class HardwareJoeBot2019 {
 
     // Declare Static members for calculations
     //static final double COUNTS_PER_MOTOR_REV    = 1120;
-    static final double COUNTS_PER_MOTOR_REV = 780;
+    static final double COUNTS_PER_MOTOR_REV = 537.6;
 
     static final double DRIVE_GEAR_REDUCTION = 1;
     static final double WHEEL_DIAMETER_INCHES = 4.0;
@@ -638,6 +638,12 @@ public class HardwareJoeBot2019 {
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
 
         // Loading trackables is not necessary for the Tensor Flow Object Detection engine.
+    }
+
+    public void strafeSeconds (long milliseconds, double power){
+        moveRobot(0, power, 0);
+        myOpMode.sleep(milliseconds);
+        stop();
     }
 
 }
