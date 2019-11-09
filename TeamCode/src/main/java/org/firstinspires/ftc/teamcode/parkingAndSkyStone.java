@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -72,14 +73,14 @@ public class parkingAndSkyStone extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+        robot.init(hardwareMap, this);
+        utility.init(hardwareMap, this);
 
-robot.moveInches(20,0,6);
-utility.closeClamp();
-robot.moveInches(-5,1,6);
-robot.rotateDegrees(90,.5);
-robot.moveInches(12,1,6);
-
-
+        robot.moveInches(20,0,6);
+        utility.closeClamp();
+        robot.moveInches(-5, 1, 6);
+        robot.rotateDegrees(90, .5);
+        robot.moveInches(12, 1, 6);
 
 
     }

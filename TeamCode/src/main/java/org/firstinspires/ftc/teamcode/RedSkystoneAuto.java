@@ -61,12 +61,12 @@ public class RedSkystoneAuto extends LinearOpMode {
         telemetry.addLine("Press > to Start");
         telemetry.update();
 
-        robot.init(hardwareMap, this);
-        utility.init(hardwareMap, this);
+       // robot.init(hardwareMap, this);
+      //  utility.init(hardwareMap, this);
 
         waitForStart();
 
-        robot.moveInches(18, .5, 5);
+       // robot.moveInches(18, .5, 5);
 
         double coords[] = I.skystone_cooridinates();
         ///Distance from skystone
@@ -75,7 +75,7 @@ public class RedSkystoneAuto extends LinearOpMode {
         ///    coords[1]
 
         if (coords[0] == 777) {
-            robot.moveInches(2.5, .5, 5);
+         //   robot.moveInches(2.5, .5, 5);
             coords = I.skystone_cooridinates();
 
 
@@ -85,11 +85,11 @@ public class RedSkystoneAuto extends LinearOpMode {
         else {
             yValue = coords[1]/25.4;
             xValue = coords[0]/25.4;
-            robot.moveRobot(0, yValue, 0);
+           // robot.moveRobot(0, yValue, 0);
             utility.ExtendArmInches(xValue + 1.5, .3);
             utility.closeClamp();
-            robot.moveInches(20, .5, 5);
-            robot.moveRobot(0, 27, 0);
+           // robot.moveInches(20, .5, 5);
+           // robot.moveRobot(0, 27, 0);
             utility.openClamp();
 
         }
