@@ -41,7 +41,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 @Autonomous(name="Sample 2", group="Pushbot")
-//@Disabled
+@Disabled
 public class autoDriveSample extends LinearOpMode {
 
     /* Declare OpMode members. */

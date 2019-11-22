@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -38,8 +39,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  *
  */
 
-@TeleOp(name="wristPosTest", group="Teleop")
-//@Disabled
+@TeleOp(name="Not this one either", group="Teleop")
+@Disabled
 public class wristPositionTest extends LinearOpMode {
 
     double wristPower;

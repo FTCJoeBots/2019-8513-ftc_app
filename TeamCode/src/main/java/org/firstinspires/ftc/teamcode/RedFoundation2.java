@@ -60,9 +60,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="BlueFoundationAuto2019", group="JoeBot")
+@Autonomous(name=" RedFoundationAuto2019-2", group="JoeBot")
 //@Disabled
-public class BlueFoundationAuto extends LinearOpMode {
+public class RedFoundation2 extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwareJoeBot2019 robot = new HardwareJoeBot2019();
@@ -75,33 +75,64 @@ public class BlueFoundationAuto extends LinearOpMode {
     public void runOpMode() {
 
         robot.init(hardwareMap, this);
-        utility.init(hardwareMap, this);
+        utility.Autoinit(hardwareMap, this);
 
         waitForStart();
 
-        robot.moveInches(-65,.5,15);
+        robot.moveInches(49.5,0.25,15);
         robot.stop();
-        robot.strafeSeconds(800, .8);
+        robot.strafeSeconds(800, 0.40);
 
         utility.grabFoundation();
-        sleep(500);
-        robot.moveInches(90, .5, 15);
+        sleep(1000);
+        robot.moveInches(-86,0.25,15);
         sleep(700);
 
         utility.releaseFoundation();
         sleep(100);
 
-        robot.strafeSeconds(300, -.5);
+        robot.strafeSeconds(300, -0.25);
 
         robot.stop();
 
-        robot.moveInches(-55, .25, 15);
+        robot.moveInches(26, .35, 15);
 
+
+        robot.strafeSeconds(1300,0.25);
+
+        robot.moveInches(26,0.5,15);
         robot.stop();
+
+
+
+
+
+        //robot.moveInches(78,0.25,15);
+        // robot.stop();
+        // robot.strafeSeconds(800, 0.40);
+
+        // utility.grabFoundation();
+        // sleep(1000);
+        // robot.moveInches(-106,0.25,15);
+        // sleep(700);
+
+        // utility.releaseFoundation();
+        // sleep(100);
+
+        // robot.strafeSeconds(300, -0.25);
+
+        // robot.stop();
+
+        // robot.moveInches(85,.25,5);
+
+        // robot.stop();
+
+
+
+
+
 
     }
 
 
 }
-
-

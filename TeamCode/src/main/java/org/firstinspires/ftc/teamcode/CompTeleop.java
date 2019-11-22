@@ -27,9 +27,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  * List of issues at Comp(1)-> https://docs.google.com/a/stjoebears.com/spreadsheets/d/1r_liipKBU7GHfONdxq9E6d4f7zikcCuXwDL2bsQfwm0/edit?usp=sharing
  *G-Sheet of time VS Heading for autonomous -> https://docs.google.com/a/stjoebears.com/spreadsheets/d/1pqv0iN94fFd5KvX1YIWP7z39HgpURXsscn0zPujs1q4/edit?usp=sharing
  */
-@TeleOp(name="Not this one", group="TeleOp")
+@TeleOp(name="CompTeleop", group="TeleOp")
 
-public class NewTeleop extends LinearOpMode {
+public class CompTeleop extends LinearOpMode {
 
     double forward;
     double clockwise;
@@ -129,7 +129,7 @@ public class NewTeleop extends LinearOpMode {
                 max = Math.abs(power3);
             }
 
-            if (max > 0.75) {
+            if (max > 0.6) {
                 power0 /= max;
                 power1 /= max;
                 power2 /= max;
@@ -146,7 +146,7 @@ public class NewTeleop extends LinearOpMode {
 
             //Turn wrist up and down
             int CurPos = utility.wristMotor.getCurrentPosition();
-            utility.wristPosition(CurPos,wristPower);
+            utility.wristPosition(wristPower);
 
             // Update Telemetry
             telemetry.addData(">", "Press Stop to end test.");

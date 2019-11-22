@@ -30,7 +30,9 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -38,9 +40,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  *
  */
 
-@Autonomous(name="RedRandomStoneAuto", group="Pushbot")
-//@Disabled
-public class MoveRandomStoneAuto extends LinearOpMode {
+@Autonomous(name="AutoWristTest", group="Pushbot")
+@Disabled
+public class WristAutoTest extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwareJoeBot2019 robot = new HardwareJoeBot2019();   // Use a Pushbot's hardware
@@ -58,7 +60,29 @@ public class MoveRandomStoneAuto extends LinearOpMode {
         utility.init(hardwareMap, this);
 
         waitForStart();
+       // utility.wristPosition(.7);
+/*
+        utility.wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        utility.wristMotor.setTargetPosition(0);
+        utility.wristMotor.setPower(0.5);
+        telemetry.addData("Current position is:", utility.wristMotor.getCurrentPosition());
+        telemetry.update();
 
-        robot.moveInches(23, .5, 7);
+
+ */
+
+        int CurrentPos = utility.wristMotor.getCurrentPosition();
+        telemetry.addData("current position is ", CurrentPos);
+        int newTargetPos = 0;
+        double newPower = 0.5;
+        utility.wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        utility.wristMotor.setTargetPosition(newTargetPos);
+        utility.wristMotor.setPower(newPower);
+
+        while (opModeIsActive() && utility.wristMotor.isBusy()) {
+            telemetry.addData("Wrist Motor Position: ", "%5d", utility.wristMotor.getCurrentPosition());
+            telemetry.update();
+        }
+
     }
 }

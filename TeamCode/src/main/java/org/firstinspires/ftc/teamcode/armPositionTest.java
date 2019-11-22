@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -39,8 +40,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  *
  */
 
-@TeleOp(name="armPosTest", group="Teleop")
-//@Disabled
+@TeleOp(name="Nope 2", group="Teleop")
+@Disabled
 public class armPositionTest extends LinearOpMode {
 
     double armPower;

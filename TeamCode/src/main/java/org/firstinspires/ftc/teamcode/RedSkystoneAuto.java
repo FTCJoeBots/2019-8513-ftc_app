@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -39,7 +40,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 // Starting at the edge of the blue depot
 
-@Autonomous(name="RedSkystonAuto", group="Pushbot")
+@Autonomous(name="RedSkystoneAuto", group="Pushbot")
 //@Disabled
 public class RedSkystoneAuto extends LinearOpMode {
 
@@ -67,11 +68,11 @@ public class RedSkystoneAuto extends LinearOpMode {
 
         waitForStart();
 
-        utility.wristFlat(.5);
-        robot.moveInches(18.5, .5, 7);
+        robot.moveInches(18, .25, 7);
+        sleep(300);
 
         double coords[] = I.skystone_cooridinates();
-        sleep(200);
+        sleep(3000);
         ///Distance from skystone
         ///    coords[0]
         //Amount off center of skystone
@@ -79,20 +80,23 @@ public class RedSkystoneAuto extends LinearOpMode {
 
         runtime.reset();
 
-        while (coords[0] == 777 && runtime.seconds() < 8) {
-            robot.strafeSeconds(200, -.25);
-            sleep(200);
+        while (coords[0] == 777 && runtime.seconds() < 15) {
+            robot.strafeSeconds(600, -.25);
+            sleep(3000);
             coords = I.skystone_cooridinates();
 
         }
 
         yValue = coords[1]/25.4;
         xValue = coords[0]/25.4;
-        robot.moveRobot(0, yValue, 0);
-        utility.ExtendArmInches(xValue, .3);
+        robot.moveRobot(0, yValue-1, 0);
+        robot.moveInches(7, 0.3, 5);
+        sleep(400);
         utility.closeClamp();
+        sleep(300);
         robot.moveInches(-20, .5, 5);
-        robot.strafeSeconds(300, .5);
+        sleep(300);
+        robot.strafeSeconds(900, .5);
         utility.openClamp();
     }
 }

@@ -9,6 +9,10 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.ServoConfigurationType;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
+import android.graphics.Color;
+
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
@@ -19,6 +23,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
+
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 
 import java.util.List;
 
@@ -53,6 +60,7 @@ public class HardwareJoeBot2019 {
 
     // Declare Sensors
     public BNO055IMU imu;                  // The IMU sensor object
+    //public ColorSensor sensorColor;
 
     // Variables used for IMU tracking...
     public Orientation angles;
@@ -92,6 +100,7 @@ public class HardwareJoeBot2019 {
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.14159);
 
+    static final double MAX_SPEED = 1;
 
     /* Constructor */
     public HardwareJoeBot2019() {
@@ -163,8 +172,13 @@ public class HardwareJoeBot2019 {
         //}
         ////////////////////////////////////////////////////////////////////////////////////////
 
+        //initialize center
+        //sensorColor = hwMap.SensorColor.get("color");
+
+        //sensorColor = hwMap.get(ColorSensor.class, "color");
 
     }
+
 
     /***
      *
@@ -222,10 +236,11 @@ public class HardwareJoeBot2019 {
 
         // gcf - inverting clockwise variables for testing
 
-        power0 = forward - clockwise + right;
-        power1 = forward + clockwise - right;
-        power2 = forward - clockwise - right;
-        power3 = forward + clockwise + right;
+        power0 = (forward - clockwise + right) * MAX_SPEED;
+        power1 = (forward + clockwise - right) * MAX_SPEED;
+        power2 = (forward - clockwise - right) * MAX_SPEED;
+        power3 = (forward + clockwise + right) * MAX_SPEED;
+
 
 
         // Normalize Wheel speeds so that no speed exceeds 1.0

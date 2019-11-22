@@ -30,7 +30,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -61,9 +60,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="MariahAutoTest", group="JoeBot")
-@Disabled
-public class foundationMove extends LinearOpMode {
+@Autonomous(name=" RedFoundationAuto2019-3", group="JoeBot")
+//@Disabled
+public class RedFoundation3 extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwareJoeBot2019 robot = new HardwareJoeBot2019();
@@ -71,24 +70,55 @@ public class foundationMove extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
 
 
+
     @Override
     public void runOpMode() {
 
-        robot.init(hardwareMap,this);
-        utility.init(hardwareMap,this);
-
-       // int newDistance = robot.motor0.getCurrentPosition();
-       // robot.motor0.setTargetPosition(newDistance + 5);
-
-       // robot.motor0.getCurrentPosition();
+        robot.init(hardwareMap, this);
+        utility.Autoinit(hardwareMap, this);
 
         waitForStart();
-// this op mode does nothing; just a test.
-robot.moveInches(100,1,5);
-robot.rotateDegrees(90,.5);
-robot.moveInches(45,1,5);
+
+        robot.moveInches(49.5,0.25,15);
+        robot.stop();
+        robot.strafeSeconds(800, 0.40);
+
+        utility.grabFoundation();
+        sleep(1000);
+        robot.moveInches(-86,0.25,15);
+        sleep(700);
+
+        utility.releaseFoundation();
+        sleep(100);
+
+        robot.strafeSeconds(300, -0.25);
+
+        robot.stop();
 
 
+
+
+
+
+        //robot.moveInches(78,0.25,15);
+        // robot.stop();
+        // robot.strafeSeconds(800, 0.40);
+
+        // utility.grabFoundation();
+        // sleep(1000);
+        // robot.moveInches(-106,0.25,15);
+        // sleep(700);
+
+        // utility.releaseFoundation();
+        // sleep(100);
+
+        // robot.strafeSeconds(300, -0.25);
+
+        // robot.stop();
+
+        // robot.moveInches(85,.25,5);
+
+        // robot.stop();
 
 
 
@@ -99,5 +129,3 @@ robot.moveInches(45,1,5);
 
 
 }
-
-
