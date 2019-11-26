@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.SwitchableLight;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -17,6 +18,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
+
+import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 
 import java.util.List;
 
@@ -87,9 +91,19 @@ public class Robot8513 {
     static final double CLAMP_OPEN = 0.55;
     static final double CLAMP_CLOSE = 1;
 
-    static final int WRIST_MIDDLE = -862; //Wrist parallel to ground
-    static final int WRIST_INBETWEEN = -750; //Wrist in between middle and up
+    static final double CAPSTONE_OPEN = .35;
+    static final double CAPSTONE_CLOSE = .85;
+
+    static final int WRIST_MIDDLE = -975; //Wrist parallel to ground
+    //static final int WRIST_INBETWEEN = -750; //Wrist in between middle and up
     static final int WRIST_UP = 0; //Wrist up
+
+    //Declare color sensors
+
+    ColorSensor colorSensorRight;
+    ColorSensor colorSensorLeft;
+    DistanceSensor distanceSensorRight;
+    DistanceSensor distanceSensorLeft;
 
 
     /* Initialize standard Hardware interfaces */
@@ -108,9 +122,18 @@ public class Robot8513 {
         clampServo = hwMap.servo.get("clampServo");
         capstoneServo = hwMap.servo.get ("capstoneServo");
 
+        //Get color sensor device
+        colorSensorRight = hwMap.colorSensor.get("colorSensorRight");
+        colorSensorLeft = hwMap.colorSensor.get("colorSensorLeft");
+
+        //Get distance sensor
+        distanceSensorRight = hwMap.get(DistanceSensor.class, "colorSensorRight");
+        distanceSensorLeft = hwMap.get(DistanceSensor.class, "colorSensorLeft");
+
 
         foundationServo.setPosition(FOUNDATION_UP);
         clampServo.setPosition(CLAMP_OPEN);
+        capstoneServo.setPosition(CAPSTONE_CLOSE);
 
 
         // Set Default Motor Directions
@@ -138,6 +161,13 @@ public class Robot8513 {
         wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         wristMotor.setTargetPosition(WRIST_MIDDLE);
         wristMotor.setPower(0.5);
+
+        if (colorSensorRight instanceof SwitchableLight) {
+            ((SwitchableLight) colorSensorRight).enableLight(true);
+        }
+        if (colorSensorLeft instanceof  SwitchableLight) {
+            ((SwitchableLight) colorSensorLeft).enableLight(true);
+        }
 
     }
 
@@ -233,11 +263,21 @@ public class Robot8513 {
         }
     }
 
-    public void wristAbove (double power){
+    /*//public void wristAbove (double power){
 
         wristMotor.setTargetPosition(WRIST_INBETWEEN);
         wristMotor.setPower(power);
 
+    }*/
+
+    public void capstoneOpen() {
+
+        capstoneServo.setPosition(CAPSTONE_OPEN);
+    }
+
+    public void capstoneClose() {
+
+        capstoneServo.setPosition(CAPSTONE_CLOSE);
     }
 
     public void wristPosition(double power) {
@@ -319,6 +359,7 @@ public class Robot8513 {
 
         foundationServo.setPosition(FOUNDATION_UP);
         clampServo.setPosition(CLAMP_OPEN);
+        capstoneServo.setPosition(CAPSTONE_CLOSE);
 
 
         // Set Default Motor Directions

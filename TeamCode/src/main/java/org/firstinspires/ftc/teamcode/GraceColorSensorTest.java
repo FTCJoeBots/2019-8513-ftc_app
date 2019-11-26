@@ -49,7 +49,11 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
+import com.qualcomm.robotcore.robot.Robot;
+
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
+import java.util.Locale;
 
 /**
  *
@@ -64,20 +68,17 @@ public class GraceColorSensorTest extends LinearOpMode {
 
   /* Declare OpMode members. */
   HardwareJoeBot2019 robot = new HardwareJoeBot2019();
+  Robot8513 utility = new Robot8513();
 
-  ColorSensor sensorColor;
+
 
  // sensorColor = hardwareMap.get(NormalizedColorSensor.class, "sensor_color");
 
  // sensorColor = HardwareMap.ColorSensor.get("color");
   //DistanceSensor sensorDistance;
-  float hsvValues[] = {0F, 0F, 0F};
+  float hsvValuesRight[] = {0F, 0F, 0F};
+  float hsvValuesLeft[] = {0F, 0F, 0F};
 
-  NormalizedColorSensor colorSensor;
-  /** The relativeLayout field is used to aid in providing interesting visual feedback
-   * in this sample application; you probably *don't* need something analogous when you
-   * use a color sensor on your robot */
-  View relativeLayout;
 
 
   @Override
@@ -88,23 +89,46 @@ public class GraceColorSensorTest extends LinearOpMode {
      * The init() method of the hardware class does all the work here
      */
     robot.init(hardwareMap, this);
+    utility.init(hardwareMap, this);
+
+    int SCALE_FACTOR = 255;
 
     // Send telemetry message to signify robot waiting;
     telemetry.addData("Status", "Resetting Encoders");    //
     telemetry.update();
 
     robot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
     robot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
     // Wait for the game to start (driver presses PLAY)
     waitForStart();
-    while (opModeIsActive()) {
-      telemetry.addData("Alpha", sensorColor.alpha());
-      telemetry.addData("Red  ", sensorColor.red());
-      telemetry.addData("Green", sensorColor.green());
-      telemetry.addData("Blue ", sensorColor.blue());
-      telemetry.addData("Hue", hsvValues[0]);
-    }
+
+    Color.RGBToHSV((int) (utility.colorSensorRight.red() * SCALE_FACTOR),
+              (int) (utility.colorSensorRight.green() * SCALE_FACTOR),
+              (int) (utility.colorSensorRight.blue() * SCALE_FACTOR),
+              hsvValuesRight);
+
+    Color.RGBToHSV((int) (utility.colorSensorLeft.red() * SCALE_FACTOR),
+              (int) (utility.colorSensorLeft.green() * SCALE_FACTOR),
+              (int) (utility.colorSensorLeft.blue() * SCALE_FACTOR),
+              hsvValuesLeft);
+
+      while (opModeIsActive()) {
+        telemetry.addLine("VALUE     RIGHT   LEFT");
+        telemetry.addData("Red:   ", "%3d   %3d", utility.colorSensorRight.red(), utility.colorSensorLeft.red());
+        telemetry.addData("Green: ", "%3d   %3d", utility.colorSensorRight.green(), utility.colorSensorLeft.green());
+        telemetry.addData("Blue:  ", "%3d   %3d", utility.colorSensorRight.blue(), utility.colorSensorLeft.blue());
+        telemetry.addData("Alpha: ", "%3d   %3d", utility.colorSensorRight.alpha(), utility.colorSensorLeft.alpha());
+        telemetry.addData("Hue:   ", "%3f   %3f", hsvValuesRight[0], hsvValuesLeft[0]);
+        telemetry.addData("Sat:   ", "%3f   %3f", hsvValuesRight[1], hsvValuesLeft[1]);
+        telemetry.addData("Distance: ", "%.02f   %.02f",
+                utility.distanceSensorRight.getDistance(DistanceUnit.CM),
+                utility.distanceSensorLeft.getDistance(DistanceUnit.CM));
+
+        telemetry.update();
+      }
+
+
+
   }
 }

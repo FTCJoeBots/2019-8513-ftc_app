@@ -104,7 +104,7 @@ public class servoTest extends LinearOpMode {
                 telemetry.addLine("Neither button is pressed on pad 2");
             }
 
-            telemetry.addData("clamp servo", capstoneServoPos);
+            telemetry.addData("capstone servo", capstoneServoPos);
             telemetry.addData("foundation servo", foundationServoPos);
             telemetry.update();
 

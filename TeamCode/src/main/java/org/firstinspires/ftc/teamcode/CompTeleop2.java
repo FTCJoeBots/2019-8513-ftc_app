@@ -56,6 +56,11 @@ public class CompTeleop2 extends LinearOpMode {
     boolean CurrClampCloseX = false;
     boolean PrevclampCloseX = false;
     boolean wristStraight = false;
+    boolean CurrCapstoneOpenX = false;
+    boolean PrevCapstoneOpenX = false;
+    boolean CurrCapstoneCloseY = false;
+    boolean PrevCapstoneCloseY = false;
+
 
     // double lift; //lift arm up
     // double extendPower; //extend arm forward
@@ -102,7 +107,8 @@ public class CompTeleop2 extends LinearOpMode {
             CurrFoundReleaseStateA = gamepad2.a;
             CurrFoundGrabStateB = gamepad2.b;
 
-
+            CurrCapstoneOpenX = gamepad1.x;
+            CurrCapstoneCloseY = gamepad1.y;
 
             // Add a tuning constant "K" to tune rotate axis sensitivity
             k = .6;
@@ -208,6 +214,24 @@ public class CompTeleop2 extends LinearOpMode {
                 utility.openClamp();
             }
             PrevClampOpenY = CurrClampOpenY;
+
+            CurrCapstoneOpenX = gamepad1.x;
+            if ((CurrCapstoneOpenX == true) && (CurrCapstoneOpenX != PrevCapstoneOpenX)) {
+
+                // When the x button is pressed on gamepad1, release the capstone
+
+                utility.capstoneOpen();
+            }
+            PrevCapstoneOpenX = CurrCapstoneOpenX;
+
+            CurrCapstoneCloseY = gamepad1.y;
+            if((CurrCapstoneCloseY == true) && (CurrCapstoneCloseY != PrevCapstoneCloseY)) {
+
+                //When the "Y" button is pressed on gamepad1, return the capstone holder to starting position
+
+                utility.capstoneClose();
+            }
+            PrevCapstoneCloseY = CurrCapstoneCloseY;
 
 
 

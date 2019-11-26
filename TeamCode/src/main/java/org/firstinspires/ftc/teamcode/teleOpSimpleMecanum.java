@@ -57,7 +57,7 @@ public class teleOpSimpleMecanum extends LinearOpMode {
     boolean CurrClampOpenY = false;
     boolean PrevClampOpenY = false;
     boolean CurrClampCloseX = false;
-    boolean PrevclampCloseX = false;
+    boolean PrevClampCloseX = false;
    // boolean wristMiddle = false; //Wrist parallel to floor
 
     // double lift; //lift arm up
@@ -96,7 +96,6 @@ public class teleOpSimpleMecanum extends LinearOpMode {
             clockwise = gamepad1.right_stick_x;
             armPower = -gamepad2.right_stick_x; //arn up and down
             liftPower = gamepad2.left_stick_y; //arm forward and backward
-
             wristPower = -gamepad2.left_stick_x; //move wrist up and down
 
 
@@ -104,7 +103,6 @@ public class teleOpSimpleMecanum extends LinearOpMode {
             CurrClampCloseX = gamepad2.x;
             CurrFoundReleaseStateA = gamepad2.a;
             CurrFoundGrabStateB = gamepad2.b;
-
 
 
 
@@ -152,10 +150,6 @@ public class teleOpSimpleMecanum extends LinearOpMode {
             // Update Telemetry
             telemetry.addData(">", "Press Stop to end test.");
 
-            if (gamepad2.right_bumper) {
-                utility.wristFlat(.5);
-            }
-
             if (gamepad1.a) {
                 telemetry.addLine("Button A is pressed");
             } else if (gamepad1.b) {
@@ -192,14 +186,14 @@ public class teleOpSimpleMecanum extends LinearOpMode {
             PrevFoundReleaseStateA = CurrFoundReleaseStateA;
 
             CurrClampCloseX = gamepad2.x;
-            if ((CurrClampCloseX == true) && (CurrClampCloseX != PrevclampCloseX)) {
+            if ((CurrClampCloseX == true) && (CurrClampCloseX != PrevClampCloseX)) {
 
                 // When the "X" button is pressed, close clamp
 
                 utility.closeClamp();
 
             }
-            PrevclampCloseX = CurrClampCloseX;
+            PrevClampCloseX = CurrClampCloseX;
 
             CurrClampOpenY = gamepad2.y;
             if ((CurrClampOpenY == true) && (CurrClampOpenY != PrevClampOpenY)) {
@@ -209,9 +203,6 @@ public class teleOpSimpleMecanum extends LinearOpMode {
                 utility.openClamp();
             }
             PrevClampOpenY = CurrClampOpenY;
-
-
-
 
             telemetry.update();
             idle();
