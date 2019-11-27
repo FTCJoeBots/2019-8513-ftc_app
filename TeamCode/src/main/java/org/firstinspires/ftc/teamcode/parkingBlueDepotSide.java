@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -60,8 +61,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="BlueAutoParking", group="JoeBot")
-//@Disabled
+@Autonomous(name="Blue Auto Parking", group="JoeBot")
+@Disabled
 public class parkingBlueDepotSide extends LinearOpMode {
 
     /* Declare OpMode members. */
@@ -72,9 +73,11 @@ public class parkingBlueDepotSide extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        robot.init(hardwareMap, this );
-robot.moveInches(5,.5,6);
-robot.moveRobot(0,2,0);
+        robot.init(hardwareMap, this);
+
+
+        robot.moveInches(2,.5,6);
+        robot.strafeSeconds(300, 0.3);
 
 
 

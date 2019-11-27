@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -61,7 +62,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 @Autonomous(name="RedAutoParking", group="JoeBot")
-//@Disabled
+@Disabled
 public class parkingRedDepotSide extends LinearOpMode {
 
     /* Declare OpMode members. */
@@ -73,8 +74,8 @@ public class parkingRedDepotSide extends LinearOpMode {
     public void runOpMode() {
 //this program needs no further testing (=
         robot.init(hardwareMap,this);
-       robot.moveInches(1,.5,6);
-      robot.moveRobot(0,2,0);
+        robot.moveInches(2,.5,6);
+        robot.strafeSeconds(300, 0.3);
 
 
 

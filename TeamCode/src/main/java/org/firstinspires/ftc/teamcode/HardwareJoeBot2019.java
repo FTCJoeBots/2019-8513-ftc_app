@@ -494,9 +494,9 @@ public class HardwareJoeBot2019 {
 
         double targetPower = 0;
 
-        double maxPower = power;
+        double maxPower = -power;
 
-        double minPower = .1;
+        double minPower = -.1;
 
         while(myOpMode.opModeIsActive() && abs(error)>closeEnough){
 
@@ -506,6 +506,7 @@ public class HardwareJoeBot2019 {
                 targetPower = minPower;
             } else {
                 targetPower = (maxPower-minPower)/2;
+
             }
             if(error < 0){
                 targetPower = -targetPower;

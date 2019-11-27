@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.Color;
+
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -7,6 +9,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
+import com.qualcomm.robotcore.hardware.NormalizedRGBA;
+import com.qualcomm.robotcore.hardware.SwitchableLight;
+
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
@@ -17,6 +23,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
+import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 
 import java.util.List;
 
@@ -49,6 +57,22 @@ public class Robot8513 {
     public DcMotor liftMotor = null;
     public DcMotor armMotor = null;
     public DcMotor wristMotor = null;
+   // NormalizedColorSensor colorSensorRight;
+   // NormalizedColorSensor colorSensorLeft;
+
+    //declare color centors
+    ColorSensor sensorColorRight;
+    DistanceSensor sensorDistanceRight;
+    ColorSensor sensorColorLeft;
+    DistanceSensor sensorDistanceLeft;
+
+
+    float[] hsvValuesRight = {0F, 0F, 0F};
+    final float valuesRight[] = hsvValuesRight;
+    float[] hsvValuesLeft = {0F, 0F, 0F};
+    final float valuesLeft[] = hsvValuesLeft;
+
+
 
     // Declare Servos
     public Servo foundationServo = null; // Servo for foundation
@@ -70,6 +94,8 @@ public class Robot8513 {
     private Orientation lastImuAngles = new Orientation();
     private double globalAngle;
 
+
+
     // Declare Static members for calculations
     static final double LIFT_THREADS_PER_INCH = 0.948;
     static final double LIFT_GEAR_REDUCTION = 1;
@@ -86,7 +112,7 @@ public class Robot8513 {
     static final double CLAMP_OPEN = 0.55;
     static final double CLAMP_CLOSE = 1;
 
-    static final int WRIST_MIDDLE = -862; //Wrist parallel to ground
+    static final int WRIST_MIDDLE = -1000; //Wrist parallel to ground
     static final int WRIST_INBETWEEN = -750; //Wrist in between middle and up
     static final int WRIST_UP = 0; //Wrist up
 
@@ -106,10 +132,17 @@ public class Robot8513 {
         foundationServo = hwMap.servo.get("foundationServo");
         clampServo = hwMap.servo.get("clampServo");
 
+        //colorSensorRight = hwMap.NormalizedColorSensor.get("colorSensorRight");
+        //colorSensorLeft = hwMap.c
+        sensorColorRight = hwMap.colorSensor.get("colorSensorRight") ;
+        sensorDistanceRight = hwMap.get(DistanceSensor.class, "colorSensorRight") ;
+
+
+        sensorColorLeft = hwMap.colorSensor.get("colorSensorLeft") ;
+        sensorDistanceLeft = hwMap.get(DistanceSensor.class, "colorSensorLeft") ;
 
         foundationServo.setPosition(FOUNDATION_UP);
         clampServo.setPosition(CLAMP_OPEN);
-
 
         // Set Default Motor Directions
         liftMotor.setDirection(DcMotor.Direction.FORWARD); //set to FORWARD (UP) if using AndyMark motors
@@ -136,6 +169,13 @@ public class Robot8513 {
         wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         wristMotor.setTargetPosition(WRIST_MIDDLE);
         wristMotor.setPower(0.5);
+
+        if (sensorColorRight instanceof SwitchableLight) {
+            ((SwitchableLight) sensorColorRight).enableLight(true);
+        }
+        if (sensorColorLeft instanceof SwitchableLight) {
+                ((SwitchableLight)sensorColorLeft).enableLight(true);
+        }
 
     }
 
@@ -345,9 +385,45 @@ public class Robot8513 {
         //wristMotor.setTargetPosition(WRIST_MIDDLE);
         //wristMotor.setPower(0.5);
 
+
+
+
     }
+public int setColorSensor(){
+
+    //NormalizedRGBA colorsRight = sensorColorRight.getNormalizedColors();
+    //NormalizedRGBA colorsLeft = sensorColorLeft.getNormalizedColors();
+
+    // sometimes it helps to multiply the raw RGB values with a scale factor
+    // to amplify/attentuate the measured values.
+    final double SCALE_FACTOR = 255;
+
+
+    Color.RGBToHSV((int)(sensorColorRight.red() * SCALE_FACTOR),
+            (int) (sensorColorRight.green() * SCALE_FACTOR),
+            (int) (sensorColorRight.blue() * SCALE_FACTOR),
+            hsvValuesRight);
+    Color.RGBToHSV((int)(sensorColorLeft.red() * SCALE_FACTOR),
+            (int) (sensorColorLeft.green() * SCALE_FACTOR),
+            (int) (sensorColorLeft.blue() * SCALE_FACTOR),
+            hsvValuesLeft);
+
+    //Color.RGBToHSV(sensorColorLeft.toColor(), hsvValuesLeft);
+   // int SkystonePosition = 2;
+   // if (hsvValuesRight[0]>27 && hsvValuesRight[0]<70) {
+        //yellow
+
+    //    if (hsvValuesLeft[0]>27 && hsvValuesLeft[0]<70){
+
+        //Mariah independent
+
+    return 0;
+}
 
 }
+
+
+
 
 
 

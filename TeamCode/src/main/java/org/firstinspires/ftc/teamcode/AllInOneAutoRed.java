@@ -32,7 +32,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -62,9 +61,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="MariahAutoSkystone", group="JoeBot")
-@Disabled
-public class parkingAndSkyStone extends LinearOpMode {
+@Autonomous(name="All in one red", group="JoeBot")
+//@Disabled
+public class AllInOneAutoRed extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwareJoeBot2019 robot = new HardwareJoeBot2019();
@@ -77,11 +76,44 @@ public class parkingAndSkyStone extends LinearOpMode {
         robot.init(hardwareMap, this);
         utility.init(hardwareMap, this);
 
-        robot.moveInches(20,0,6);
+        sleep(5000);
+
+        robot.moveInches(30,0.4,6);
+        sleep(600);
         utility.closeClamp();
-        robot.moveInches(-5, 1, 6);
-        robot.rotateDegrees(90, .5);
-        robot.moveInches(12, 1, 6);
+        sleep(600);
+        robot.moveInches(-5, .5, 6);
+        sleep(600);
+        robot.rotateDegrees(90, .3);
+        robot.moveInches(60, 0.5, 6);
+        robot.rotateDegrees(-90,0.3);
+
+        robot.moveInches(49.5,0.25,15);
+        robot.stop();
+        robot.strafeSeconds(800, 0.40);
+
+        utility.grabFoundation();
+        sleep(1000);
+        robot.moveInches(-86,0.25,15);
+        sleep(700);
+
+        utility.releaseFoundation();
+        sleep(100);
+
+        robot.strafeSeconds(300, -0.25);
+
+        robot.stop();
+
+        robot.moveInches(53,.25,5);
+
+        robot.stop();
+
+
+
+
+
+
+
 
 
     }

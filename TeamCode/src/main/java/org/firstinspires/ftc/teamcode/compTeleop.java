@@ -1,11 +1,8 @@
-
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.configuration.Utility;
 
 /**
  *import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -29,9 +26,9 @@ import com.qualcomm.robotcore.hardware.configuration.Utility;
  * List of issues at Comp(1)-> https://docs.google.com/a/stjoebears.com/spreadsheets/d/1r_liipKBU7GHfONdxq9E6d4f7zikcCuXwDL2bsQfwm0/edit?usp=sharing
  *G-Sheet of time VS Heading for autonomous -> https://docs.google.com/a/stjoebears.com/spreadsheets/d/1pqv0iN94fFd5KvX1YIWP7z39HgpURXsscn0zPujs1q4/edit?usp=sharing
  */
-@TeleOp(name="Simple Mecanum Drive", group="TeleOp")
+@TeleOp(name="If auto Move foundation", group="TeleOp")
 
-public class teleOpSimpleMecanum extends LinearOpMode {
+public class compTeleop extends LinearOpMode {
 
     double forward;
     double clockwise;
@@ -44,10 +41,9 @@ public class teleOpSimpleMecanum extends LinearOpMode {
     double max;
     double liftPower;
     double armPower;
-
     double wristPower;
-   // double lift; //lift arm up
-   // double extendPower; //extend arm forward
+    // double lift; //lift arm up
+    // double extendPower; //extend arm forward
     double clampOpen;
     double clampClose;
     boolean CurrFoundGrabStateB = false;
@@ -58,6 +54,7 @@ public class teleOpSimpleMecanum extends LinearOpMode {
     boolean PrevClampOpenY = false;
     boolean CurrClampCloseX = false;
     boolean PrevclampCloseX = false;
+    boolean wristStraight = false;
 
     // double lift; //lift arm up
     // double extendPower; //extend arm forward
@@ -93,10 +90,11 @@ public class teleOpSimpleMecanum extends LinearOpMode {
             //right = gamepad1.left_stick_x;
             right = -gamepad1.left_trigger + gamepad1.right_trigger;
             clockwise = gamepad1.right_stick_x;
-            liftPower = -gamepad2.right_stick_y; //arn up and down
-            armPower = -gamepad2.left_stick_y; //arm forward and backward
+            armPower = -gamepad2.right_stick_x; //arm forward and backward
+            liftPower = gamepad2.left_stick_y; //lift up and down
 
             wristPower = -gamepad2.left_stick_x; //move wrist up and down
+
 
             CurrClampOpenY = gamepad2.y;
             CurrClampCloseX = gamepad2.x;
@@ -130,7 +128,7 @@ public class teleOpSimpleMecanum extends LinearOpMode {
                 max = Math.abs(power3);
             }
 
-            if (max > 1) {
+            if (max > 0.75) {
                 power0 /= max;
                 power1 /= max;
                 power2 /= max;
@@ -145,9 +143,16 @@ public class teleOpSimpleMecanum extends LinearOpMode {
             utility.armMotor.setPower(armPower); //Extend and contract the arm
             utility.wristMotor.setPower(wristPower);
 
+            //Turn wrist up and down
+            int CurPos = utility.wristMotor.getCurrentPosition();
+            utility.wristPosition(wristPower);
 
             // Update Telemetry
             telemetry.addData(">", "Press Stop to end test.");
+
+            if (gamepad2.right_bumper) {
+                utility.wristFlat(.5);
+            }
 
             if (gamepad1.a) {
                 telemetry.addLine("Button A is pressed");
