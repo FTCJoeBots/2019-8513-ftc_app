@@ -61,9 +61,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="All in one red", group="JoeBot")
+@Autonomous(name="lift test", group="JoeBot")
 //@Disabled
-public class AllInOneAutoRed extends LinearOpMode {
+public class liftTest extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwareJoeBot2019 robot = new HardwareJoeBot2019();
@@ -73,66 +73,13 @@ public class AllInOneAutoRed extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        robot.init(hardwareMap, this);
+
+        robot.init(hardwareMap,this);
         utility.init(hardwareMap, this);
 
-        sleep(5000);
+       utility.liftMotorInches(5,0.5);
 
-        robot.moveInches(33,0.3,6);
-        sleep(600);
-        utility.closeClamp();
-        sleep(600);
-        robot.moveInches(-13, .6, 6);
-        sleep(600);
-        robot.rotateDegrees(80, .4);
-        robot.moveInches(50, 0.6, 6);
-        robot.rotateDegrees(-75,0.4);
-
-        robot.moveInches(27,0.25,15);
-        robot.stop();
-        robot.strafeSeconds(800, 0.31);
-
-        utility.grabFoundation();
-        sleep(1000);
-        utility.openClamp();
-        robot.moveInches(-86,0.26,15);
-        sleep(700);
-
-        utility.releaseFoundation();
-        sleep(100);
-
-        robot.moveInches(53,0.6,8);
-
-        /*robot.strafeSeconds(300, -0.25);
-
-
-        robot.stop();
-
-        robot.moveInches(26,.25,5);
-
-        robot.strafeSeconds(1000, .5);
-
-
-
-        robot.rotateDegrees(-180,.5);
-
-        robot.moveInches(10,.3,6);
-
-        utility.openClamp();
-
-        robot.strafeSeconds(1000,.5);
-
-        robot.moveInches(-26,0.5,6); */
-
-
-        robot.stop();
-
-
-
-
-
-
-
+       utility.liftMotorInches(10,0.5);
 
 
     }

@@ -19,6 +19,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
@@ -57,14 +58,18 @@ public class Robot8513 {
     public DcMotor liftMotor = null;
     public DcMotor armMotor = null;
     public DcMotor wristMotor = null;
+    public Servo capstoneServo = null; //Servo for holding and releasing capstone
    // NormalizedColorSensor colorSensorRight;
    // NormalizedColorSensor colorSensorLeft;
 
-    //declare color centors
-    ColorSensor sensorColorRight;
-    DistanceSensor sensorDistanceRight;
-    ColorSensor sensorColorLeft;
-    DistanceSensor sensorDistanceLeft;
+    //declare color sensors
+    ColorSensor colorSensorRight;
+    DistanceSensor distanceSensorRight;
+    ColorSensor colorSensorLeft;
+    DistanceSensor distanceSensorLeft;
+
+
+
 
 
     float[] hsvValuesRight = {0F, 0F, 0F};
@@ -112,9 +117,11 @@ public class Robot8513 {
     static final double CLAMP_OPEN = 0.55;
     static final double CLAMP_CLOSE = 1;
 
-    static final int WRIST_MIDDLE = -1000; //Wrist parallel to ground
-    static final int WRIST_INBETWEEN = -750; //Wrist in between middle and up
+    static final int WRIST_MIDDLE = -975; //Wrist parallel to ground
     static final int WRIST_UP = 0; //Wrist up
+
+    static final double CAPSTONE_OPEN = .35;
+    static final double CAPSTONE_CLOSE = .85;
 
 
     /* Initialize standard Hardware interfaces */
@@ -129,20 +136,22 @@ public class Robot8513 {
         armMotor = hwMap.dcMotor.get("armMotor");
         wristMotor = hwMap.dcMotor.get("wristMotor");
 
+        capstoneServo = hwMap.servo.get ("capstoneServo");
         foundationServo = hwMap.servo.get("foundationServo");
         clampServo = hwMap.servo.get("clampServo");
 
         //colorSensorRight = hwMap.NormalizedColorSensor.get("colorSensorRight");
         //colorSensorLeft = hwMap.c
-        sensorColorRight = hwMap.colorSensor.get("colorSensorRight") ;
-        sensorDistanceRight = hwMap.get(DistanceSensor.class, "colorSensorRight") ;
+        colorSensorRight = hwMap.colorSensor.get("colorSensorRight") ;
+        distanceSensorRight = hwMap.get(DistanceSensor.class, "colorSensorRight") ;
 
 
-        sensorColorLeft = hwMap.colorSensor.get("colorSensorLeft") ;
-        sensorDistanceLeft = hwMap.get(DistanceSensor.class, "colorSensorLeft") ;
+        colorSensorLeft = hwMap.colorSensor.get("colorSensorLeft") ;
+        distanceSensorLeft = hwMap.get(DistanceSensor.class, "colorSensorLeft") ;
 
         foundationServo.setPosition(FOUNDATION_UP);
         clampServo.setPosition(CLAMP_OPEN);
+        capstoneServo.setPosition(CAPSTONE_CLOSE);
 
         // Set Default Motor Directions
         liftMotor.setDirection(DcMotor.Direction.FORWARD); //set to FORWARD (UP) if using AndyMark motors
@@ -170,11 +179,11 @@ public class Robot8513 {
         wristMotor.setTargetPosition(WRIST_MIDDLE);
         wristMotor.setPower(0.5);
 
-        if (sensorColorRight instanceof SwitchableLight) {
-            ((SwitchableLight) sensorColorRight).enableLight(true);
+        if (colorSensorRight instanceof SwitchableLight) {
+            ((SwitchableLight) colorSensorRight).enableLight(true);
         }
-        if (sensorColorLeft instanceof SwitchableLight) {
-                ((SwitchableLight)sensorColorLeft).enableLight(true);
+        if (colorSensorLeft instanceof SwitchableLight) {
+                ((SwitchableLight)colorSensorLeft).enableLight(true);
         }
 
     }
@@ -271,13 +280,6 @@ public class Robot8513 {
         }
     }
 
-    public void wristAbove (double power){
-
-        wristMotor.setTargetPosition(WRIST_INBETWEEN);
-        wristMotor.setPower(power);
-
-    }
-
     public void wristPosition(double power) {
 
         // This method should take in the operator control (via the power variable) which will
@@ -339,6 +341,17 @@ public class Robot8513 {
 
     }
 
+    public void capstoneOpen() {
+
+        capstoneServo.setPosition(CAPSTONE_OPEN);
+    }
+
+    public void capstoneClose() {
+
+        capstoneServo.setPosition(CAPSTONE_CLOSE);
+    }
+
+
     /* Initialize standard Hardware interfaces */
     public void Autoinit(HardwareMap ahwMap, LinearOpMode opMode) {
         // Save reference to Hardware map
@@ -389,7 +402,8 @@ public class Robot8513 {
 
 
     }
-public int setColorSensor(){
+public int isYellow
+        (){
 
     //NormalizedRGBA colorsRight = sensorColorRight.getNormalizedColors();
     //NormalizedRGBA colorsLeft = sensorColorLeft.getNormalizedColors();
@@ -399,27 +413,28 @@ public int setColorSensor(){
     final double SCALE_FACTOR = 255;
 
 
-    Color.RGBToHSV((int)(sensorColorRight.red() * SCALE_FACTOR),
-            (int) (sensorColorRight.green() * SCALE_FACTOR),
-            (int) (sensorColorRight.blue() * SCALE_FACTOR),
+    Color.RGBToHSV((int)(colorSensorRight.red() * SCALE_FACTOR),
+            (int) (colorSensorRight.green() * SCALE_FACTOR),
+            (int) (colorSensorRight.blue() * SCALE_FACTOR),
             hsvValuesRight);
-    Color.RGBToHSV((int)(sensorColorLeft.red() * SCALE_FACTOR),
-            (int) (sensorColorLeft.green() * SCALE_FACTOR),
-            (int) (sensorColorLeft.blue() * SCALE_FACTOR),
+    Color.RGBToHSV((int)(colorSensorLeft.red() * SCALE_FACTOR),
+            (int) (colorSensorLeft.green() * SCALE_FACTOR),
+            (int) (colorSensorLeft.blue() * SCALE_FACTOR),
             hsvValuesLeft);
 
-    //Color.RGBToHSV(sensorColorLeft.toColor(), hsvValuesLeft);
-   // int SkystonePosition = 2;
-   // if (hsvValuesRight[0]>27 && hsvValuesRight[0]<70) {
-        //yellow
 
-    //    if (hsvValuesLeft[0]>27 && hsvValuesLeft[0]<70){
-
-        //Mariah independent
 
     return 0;
 }
+    public double [] distance ()
+    {
+        double distanceArray [] = {-1,-1};
+        distanceArray[0] = distanceSensorRight.getDistance(DistanceUnit.CM);
+        distanceArray[1] = distanceSensorLeft.getDistance(DistanceUnit.CM);
 
+        return distanceArray;
+
+    }
 }
 
 
