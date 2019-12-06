@@ -27,7 +27,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  *G-Sheet of time VS Heading for autonomous -> https://docs.google.com/a/stjoebears.com/spreadsheets/d/1pqv0iN94fFd5KvX1YIWP7z39HgpURXsscn0zPujs1q4/edit?usp=sharing
  */
 @TeleOp(name="Not this one", group="TeleOp")
-//@Disabled
+@Disabled
 public class servoTest extends LinearOpMode {
 
     double clampServoPos = 0.3;
@@ -51,16 +51,16 @@ public class servoTest extends LinearOpMode {
         while (opModeIsActive()) {
 
             if(gamepad1.dpad_up == true){
-                capstoneServoPos += 0.05;
-                utility.capstoneServo.setPosition(capstoneServoPos);
+                clampServoPos += 0.05;
+                utility.clampServo.setPosition(clampServoPos);
                 gamepad1.dpad_up=false;
                 sleep(1000);
 
             }
 
             if(gamepad1.dpad_down == true){
-                capstoneServoPos -= 0.05;
-                utility.capstoneServo.setPosition(capstoneServoPos);
+                clampServoPos -= 0.05;
+                utility.clampServo.setPosition(clampServoPos);
                 sleep(1000);
             }
 
@@ -104,7 +104,7 @@ public class servoTest extends LinearOpMode {
                 telemetry.addLine("Neither button is pressed on pad 2");
             }
 
-            telemetry.addData("capstone servo", capstoneServoPos);
+            telemetry.addData("capstone servo", clampServoPos);
             telemetry.addData("foundation servo", foundationServoPos);
             telemetry.update();
 

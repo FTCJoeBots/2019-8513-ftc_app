@@ -14,6 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
@@ -88,14 +89,13 @@ public class Robot8513 {
     static final double FOUNDATION_DOWN = 1;
     static final double FOUNDATION_UP = -0.1;
 
-    static final double CLAMP_OPEN = 0.55;
-    static final double CLAMP_CLOSE = 1;
+    static final double CLAMP_OPEN = 0.1;
+    static final double CLAMP_CLOSE = 0.5;
 
     static final double CAPSTONE_OPEN = .35;
     static final double CAPSTONE_CLOSE = .85;
 
-    static final int WRIST_MIDDLE = -975; //Wrist parallel to ground
-    //static final int WRIST_INBETWEEN = -750; //Wrist in between middle and up
+    static final int WRIST_MIDDLE = -985; //Wrist parallel to ground
     static final int WRIST_UP = 0; //Wrist up
 
     //Declare color sensors
@@ -120,7 +120,7 @@ public class Robot8513 {
 
         foundationServo = hwMap.servo.get("foundationServo");
         clampServo = hwMap.servo.get("clampServo");
-        capstoneServo = hwMap.servo.get ("capstoneServo");
+        capstoneServo = hwMap.servo.get("capstoneServo");
 
         //Get color sensor device
         colorSensorRight = hwMap.colorSensor.get("colorSensorRight");
@@ -155,7 +155,6 @@ public class Robot8513 {
         wristMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
-
         //Initialize wrist position
         wristMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -165,7 +164,7 @@ public class Robot8513 {
         if (colorSensorRight instanceof SwitchableLight) {
             ((SwitchableLight) colorSensorRight).enableLight(true);
         }
-        if (colorSensorLeft instanceof  SwitchableLight) {
+        if (colorSensorLeft instanceof SwitchableLight) {
             ((SwitchableLight) colorSensorLeft).enableLight(true);
         }
 
@@ -247,15 +246,16 @@ public class Robot8513 {
 
         clampServo.setPosition(CLAMP_OPEN);
     }
-        // closes servo for clamp
-    public void closeClamp () {
+
+    // closes servo for clamp
+    public void closeClamp() {
 
         clampServo.setPosition(CLAMP_CLOSE);
 
 
     }
 
-    public void wristFlat(double power){
+    public void wristFlat(double power) {
         if (myOpMode.opModeIsActive()) {
 
             wristMotor.setTargetPosition(WRIST_MIDDLE);
@@ -263,12 +263,10 @@ public class Robot8513 {
         }
     }
 
-    /*//public void wristAbove (double power){
+    public void wristUp (double power) {
 
-        wristMotor.setTargetPosition(WRIST_INBETWEEN);
-        wristMotor.setPower(power);
-
-    }*/
+        wristMotor.setTargetPosition(0);
+    }
 
     public void capstoneOpen() {
 
@@ -303,7 +301,7 @@ public class Robot8513 {
             // move down fast
             newTargetPos = wristMotor.getCurrentPosition() - 100;
             newPower = 0.6;
-        } else if (power < 0 ) {
+        } else if (power < 0) {
             // move down slowly
             newTargetPos = wristMotor.getCurrentPosition() - 30;
             newPower = 0.3;
@@ -355,12 +353,20 @@ public class Robot8513 {
 
         foundationServo = hwMap.servo.get("foundationServo");
         clampServo = hwMap.servo.get("clampServo");
+        capstoneServo = hwMap.servo.get("capstoneServo");
 
 
         foundationServo.setPosition(FOUNDATION_UP);
         clampServo.setPosition(CLAMP_OPEN);
         capstoneServo.setPosition(CAPSTONE_CLOSE);
 
+        //Get color sensor device
+        colorSensorRight = hwMap.colorSensor.get("colorSensorRight");
+        colorSensorLeft = hwMap.colorSensor.get("colorSensorLeft");
+
+        //Get distance sensor
+        distanceSensorRight = hwMap.get(DistanceSensor.class, "colorSensorRight");
+        distanceSensorLeft = hwMap.get(DistanceSensor.class, "colorSensorLeft");
 
         // Set Default Motor Directions
         liftMotor.setDirection(DcMotor.Direction.FORWARD); //set to FORWARD (UP) if using AndyMark motors
@@ -381,13 +387,46 @@ public class Robot8513 {
         wristMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
-
         //Initialize wrist position
         wristMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         //wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         //wristMotor.setTargetPosition(WRIST_MIDDLE);
         //wristMotor.setPower(0.5);
 
+    }
+
+    public int checkSkystone(double hueRight, double hueLeft) {
+
+        if (hueLeft > 43) {
+            return 3;
+        } // Skystone is in 3rd position
+
+        else if (hueRight > 43) {
+            return 1;
+        } // Skystone is in 1st position
+
+        else return 2; // Skystone is in 2nd position or the robot can't detect it
+
+    }
+
+    public int checkSkystoneRed(double hueRight, double hueLeft) {
+
+        if (hueLeft > 45) {
+            return 3;
+        } // Skystone is in 3rd position
+
+        else if (hueRight > 45) {
+            return 1;
+        } // Skystone is in 1st position
+
+        else return 2; // Skystone is in 2nd position or the robot can't detect it
+
+    }
+
+    public double getDistance () {
+
+        return (int) ((distanceSensorRight.getDistance(DistanceUnit.INCH)
+                + distanceSensorLeft.getDistance(DistanceUnit.INCH))/2);
     }
 
 }

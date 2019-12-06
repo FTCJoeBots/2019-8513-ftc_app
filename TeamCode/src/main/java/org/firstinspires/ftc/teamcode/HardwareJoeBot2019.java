@@ -509,9 +509,9 @@ public class HardwareJoeBot2019 {
 
         double targetPower = 0;
 
-        double maxPower = power;
+        double maxPower = -power;
 
-        double minPower = .1;
+        double minPower = -.1;
 
         while(myOpMode.opModeIsActive() && abs(error)>closeEnough){
 
@@ -537,11 +537,12 @@ public class HardwareJoeBot2019 {
             myOpMode.telemetry.update();
         }
 
+        stop();
+
         myOpMode.telemetry.addData("targetHeading: ", targetHeading);
         myOpMode.telemetry.addData("currentHeading: ", currentHeading);
         myOpMode.telemetry.addData("targetPower: ", targetPower);
         myOpMode.telemetry.update();
-
 
     }
 

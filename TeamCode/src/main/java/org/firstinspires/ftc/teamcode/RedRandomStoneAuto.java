@@ -71,8 +71,7 @@ public class RedRandomStoneAuto extends LinearOpMode {
         utility.openClamp();
         sleep(500);
         robot.moveInches(-7, 0.5, 5);
-        //utility.wristAbove(0.5);
-        //sleep(300);
+        sleep(400);
         robot.strafeSeconds(800, -0.5);
         utility.wristMotor.setTargetPosition(0);
         utility.wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);

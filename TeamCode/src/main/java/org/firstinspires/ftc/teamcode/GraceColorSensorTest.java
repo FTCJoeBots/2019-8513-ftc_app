@@ -62,8 +62,8 @@ import java.util.Locale;
  *
  */
 
-@TeleOp(name="Grace Color Sensor Test", group="8513")
-//@Disabled
+@Autonomous(name="Grace Color Sensor Test", group="8513")
+@Disabled
 public class GraceColorSensorTest extends LinearOpMode {
 
   /* Declare OpMode members. */
@@ -89,7 +89,7 @@ public class GraceColorSensorTest extends LinearOpMode {
      * The init() method of the hardware class does all the work here
      */
     robot.init(hardwareMap, this);
-    utility.init(hardwareMap, this);
+    utility.Autoinit(hardwareMap, this);
 
     int SCALE_FACTOR = 255;
 
@@ -126,6 +126,26 @@ public class GraceColorSensorTest extends LinearOpMode {
                 utility.distanceSensorLeft.getDistance(DistanceUnit.CM));
 
         telemetry.update();
+
+        /*if (utility.checkSkystone(hsvValuesRight[0], hsvValuesLeft[0]) == 1) {
+
+            robot.strafeSeconds(3000, 0.2);
+        }
+
+        if (utility.checkSkystone(hsvValuesRight[0], hsvValuesLeft[0]) == 2) {
+
+              robot.strafeSeconds(3000, -0.2);
+        }
+
+        if (utility.checkSkystone(hsvValuesRight[0], hsvValuesLeft[0]) == 3) {
+
+              robot.moveInches(5, 0.5, 4);
+        }
+
+        sleep(500);
+        utility.closeClamp();
+        robot.moveInches(-13, .5, 7);*/
+
       }
 
 
