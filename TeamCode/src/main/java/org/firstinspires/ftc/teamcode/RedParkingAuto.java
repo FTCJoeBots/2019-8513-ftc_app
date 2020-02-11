@@ -38,7 +38,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  *
  */
 
-@Autonomous(name="RedParkingAuto", group="Pushbot")
+@Autonomous(name="Red Just Wrist", group="Pushbot")
 //@Disabled
 public class RedParkingAuto extends LinearOpMode {
 
@@ -58,11 +58,6 @@ public class RedParkingAuto extends LinearOpMode {
         utility.init(hardwareMap, this);
 
         waitForStart();
-
-        //Move forward 12 inches
-
-        robot.moveInches(2, 0.3, 5);
-        robot.strafeSeconds(300, 0.3);
 
         telemetry.addLine("We're done. Press stop.");
         telemetry.update();
