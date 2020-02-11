@@ -31,22 +31,22 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
  * This is sample code used to explain how to write an autonomous code
  *
  */
-// Starting at the edge of the red bulding zone tape towards the wall
 
-@Autonomous(name="RedFoundationAuto", group="Pushbot")
+@Autonomous(name="RedRandomStoneAuto", group="Pushbot")
 //@Disabled
-public class RedFoundationAuto extends LinearOpMode {
+public class RedRandomStoneAuto extends LinearOpMode {
 
     /* Declare OpMode members. */
-    HardwareJoeBot2019      robot   = new HardwareJoeBot2019();   // Use a Pushbot's hardware
+    HardwareJoeBot2019 robot = new HardwareJoeBot2019();   // Use a Pushbot's hardware
     Robot8513 utility = new Robot8513();
-    private ElapsedTime     runtime = new ElapsedTime();
+    private ElapsedTime runtime = new ElapsedTime();
 
 
     @Override
@@ -55,23 +55,32 @@ public class RedFoundationAuto extends LinearOpMode {
         telemetry.addLine("Press > to Start");
         telemetry.update();
 
-        robot.init(hardwareMap,this);
+        robot.init(hardwareMap, this);
         utility.init(hardwareMap, this);
 
         waitForStart();
 
-        robot.moveRobot(0, 28, 0);
-        utility.grabFoundation();
+        robot.moveInches(31, .3, 7);
+        sleep(800);
+        utility.closeClamp();
+        sleep(500);
+        robot.moveInches(-13, .5, 7);
+        sleep(800);
+        robot.strafeSeconds(1500, 0.5);
+        sleep(700);
+        utility.openClamp();
+        sleep(500);
+        robot.moveInches(-7, 0.5, 5);
+        sleep(400);
+        robot.strafeSeconds(800, -0.5);
+        utility.wristMotor.setTargetPosition(0);
+        utility.wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        utility.wristMotor.setPower(0.5);
 
-        robot.moveRobot(0, 28, 0);
-        utility.releaseFoundation();
-        robot.moveInches(50, .5, 10);
-
-
-
-
+        while (opModeIsActive() && utility.wristMotor.isBusy()) {
+            telemetry.addData("Wrist Motor Position: ", "%5d", utility.wristMotor.getCurrentPosition());
+            telemetry.update();
+        }
 
     }
-
 }
-

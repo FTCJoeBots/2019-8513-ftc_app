@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -37,16 +38,22 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * This is sample code used to explain how to write an autonomous code
  *
  */
-// Starting at the edge of the blue bulding zone tape towards the wall
+// Starting at the edge of the blue depot
 
-@Autonomous(name="BlueFoundationAuto", group="Pushbot")
-//@Disabled
-public class BlueFoundationAuto extends LinearOpMode {
+@Autonomous(name="RedVuforiaSkystoneAuto", group="Pushbot")
+@Disabled
+public class RedVuforiaSkystoneAuto extends LinearOpMode {
 
     /* Declare OpMode members. */
-    HardwareJoeBot2019      robot   = new HardwareJoeBot2019();   // Use a Pushbot's hardware
+    HardwareJoeBot2019 robot = new HardwareJoeBot2019();   // Use a Pushbot's hardware
     Robot8513 utility = new Robot8513();
-    private ElapsedTime     runtime = new ElapsedTime();
+    Image_Recognition I = new Image_Recognition();
+
+    double xValue;
+    double yValue;
+
+
+    private ElapsedTime runtime = new ElapsedTime();
 
 
     @Override
@@ -55,22 +62,41 @@ public class BlueFoundationAuto extends LinearOpMode {
         telemetry.addLine("Press > to Start");
         telemetry.update();
 
-        robot.init(hardwareMap,this);
+        robot.init(hardwareMap, this);
         utility.init(hardwareMap, this);
+        I.init(hardwareMap, this);
 
         waitForStart();
 
-        robot.moveRobot(0, -28, 0);
-        utility.grabFoundation();
+        robot.moveInches(18, .25, 7);
+        sleep(300);
 
-        robot.moveRobot(0, -28, 0);
-        utility.releaseFoundation();
-        robot.moveInches(50, .5, 10);
+        double coords[] = I.skystone_cooridinates();
+        sleep(3000);
+        ///Distance from skystone
+        ///    coords[0]
+        //Amount off center of skystone
+        ///    coords[1]
 
+        runtime.reset();
 
+        while (coords[0] == 777 && runtime.seconds() < 15) {
+            robot.strafeSeconds(600, -.25);
+            sleep(3000);
+            coords = I.skystone_cooridinates();
 
+        }
 
-
+        yValue = coords[1]/25.4;
+        xValue = coords[0]/25.4;
+        robot.moveRobot(0, yValue-1, 0);
+        robot.moveInches(7, 0.3, 5);
+        sleep(400);
+        utility.closeClamp();
+        sleep(300);
+        robot.moveInches(-20, .5, 5);
+        sleep(300);
+        robot.strafeSeconds(900, .5);
+        utility.openClamp();
     }
-
 }

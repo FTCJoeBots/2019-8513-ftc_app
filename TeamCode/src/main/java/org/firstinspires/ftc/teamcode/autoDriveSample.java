@@ -41,7 +41,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 @Autonomous(name="Sample 2", group="Pushbot")
-//@Disabled
+@Disabled
 public class autoDriveSample extends LinearOpMode {
 
     /* Declare OpMode members. */
@@ -62,6 +62,7 @@ public class autoDriveSample extends LinearOpMode {
         //Move forward 12 inches
 
         robot.moveInches(12, 0.5, 5);
+        robot.moveInches(20, 0.8, 8);
 
         telemetry.addLine("We're done. Press stop.");
         telemetry.update();

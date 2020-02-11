@@ -31,70 +31,57 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
- * This file illustrates the concept of driving a path based on encoder counts.
- * It uses the common Pushbot hardware class to define the drive on the robot.
- * The code is structured as a LinearOpMode
+ * This is sample code used to explain how to write an autonomous code
  *
- * The code REQUIRES that you DO have encoders on the wheels,
- *   otherwise you would use: PushbotAutoDriveByTime;
- *
- *  This code ALSO requires that the drive Motors have been configured such that a positive
- *  power command moves them forwards, and causes the encoders to count UP.
- *
- *   The desired path in this example is:
- *   - Drive forward for 48 inches
- *   - Spin right for 12 Inches
- *   - Drive Backwards for 24 inches
- *   - Stop and close the claw.
- *
- *  The code is written using a method called: encoderDrive(speed, leftInches, rightInches, timeoutS)
- *  that performs the actual movement.
- *  This methods assumes that each movement is relative to the last stopping place.
- *  There are other ways to perform encoder based moves, but this method is probably the simplest.
- *  This code uses the RUN_TO_POSITION mode to enable the Motor controllers to generate the run profile
- *
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="MariahAutoTurningTest", group="JoeBot")
+@Autonomous(name="BlueRandomStoneAuto", group="Pushbot")
 //@Disabled
-public class mariahAutoTurningTest extends LinearOpMode {
+public class BlueRandomStoneAuto extends LinearOpMode {
 
     /* Declare OpMode members. */
-    HardwareJoeBot2019 robot = new HardwareJoeBot2019();
+    HardwareJoeBot2019 robot = new HardwareJoeBot2019();   // Use a Pushbot's hardware
+    Robot8513 utility = new Robot8513();
     private ElapsedTime runtime = new ElapsedTime();
-
-
 
 
     @Override
     public void runOpMode() {
 
-        robot.init(hardwareMap,this);
+        telemetry.addLine("Press > to Start");
+        telemetry.update();
 
-       // int newDistance = robot.motor0.getCurrentPosition();
-       // robot.motor0.setTargetPosition(newDistance + 5);
-
-       // robot.motor0.getCurrentPosition();
+        robot.init(hardwareMap, this);
+        utility.init(hardwareMap, this);
 
         waitForStart();
 
+        robot.moveInches(33.5, .3, 7);
+        sleep(800);
+        utility.closeClamp();
+        sleep(500);
+        robot.moveInches(-13, .5, 7);
+        sleep(800);
+        robot.strafeSeconds(1200, -0.5);
+        sleep(700);
+        utility.openClamp();
+        sleep(500);
+        robot.moveInches(-7, 0.5, 5);
+        //utility.wristAbove(0.5);
+        //sleep(300);
+        robot.strafeSeconds(830, 0.5);
+        utility.wristMotor.setTargetPosition(0);
+        utility.wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        utility.wristMotor.setPower(0.5);
 
-
-        robot.rotateDegrees(90,.5);
-        robot.moveInches(25,1,9);
-        robot.rotateDegrees(180,.5);
-
-
-
+        while (opModeIsActive() && utility.wristMotor.isBusy()) {
+            telemetry.addData("Wrist Motor Position: ", "%5d", utility.wristMotor.getCurrentPosition());
+            telemetry.update();
+        }
 
     }
-
-
 }
-
-

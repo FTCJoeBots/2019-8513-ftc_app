@@ -4,9 +4,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.configuration.Utility;
 
 /**
  *import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -30,9 +27,9 @@ import com.qualcomm.robotcore.hardware.configuration.Utility;
  * List of issues at Comp(1)-> https://docs.google.com/a/stjoebears.com/spreadsheets/d/1r_liipKBU7GHfONdxq9E6d4f7zikcCuXwDL2bsQfwm0/edit?usp=sharing
  *G-Sheet of time VS Heading for autonomous -> https://docs.google.com/a/stjoebears.com/spreadsheets/d/1pqv0iN94fFd5KvX1YIWP7z39HgpURXsscn0zPujs1q4/edit?usp=sharing
  */
-@TeleOp(name="Nope", group="TeleOp")
-@Disabled
-public class teleOpSimpleMecanum extends LinearOpMode {
+@TeleOp(name="If Wrist Is Down", group="TeleOp")
+//@Disabled
+public class CompTeleop2 extends LinearOpMode {
 
     double forward;
     double clockwise;
@@ -48,8 +45,8 @@ public class teleOpSimpleMecanum extends LinearOpMode {
     double wristPower;
    // double lift; //lift arm up
    // double extendPower; //extend arm forward
-    double  clampOpen;
-    double  clampClose;
+    double clampOpen;
+    double clampClose;
     boolean CurrFoundGrabStateB = false;
     boolean PrevFoundGrabStateB = false;
     boolean CurrFoundReleaseStateA = false;
@@ -57,8 +54,13 @@ public class teleOpSimpleMecanum extends LinearOpMode {
     boolean CurrClampOpenY = false;
     boolean PrevClampOpenY = false;
     boolean CurrClampCloseX = false;
-    boolean PrevClampCloseX = false;
-   // boolean wristMiddle = false; //Wrist parallel to floor
+    boolean PrevclampCloseX = false;
+    boolean wristStraight = false;
+    boolean CurrCapstoneOpenX = false;
+    boolean PrevCapstoneOpenX = false;
+    boolean CurrCapstoneCloseY = false;
+    boolean PrevCapstoneCloseY = false;
+
 
     // double lift; //lift arm up
     // double extendPower; //extend arm forward
@@ -77,7 +79,7 @@ public class teleOpSimpleMecanum extends LinearOpMode {
 
 
         robot.init(hardwareMap, this);
-        utility.init(hardwareMap, this);
+        utility.Autoinit(hardwareMap, this);
 
 
         waitForStart();
@@ -94,8 +96,9 @@ public class teleOpSimpleMecanum extends LinearOpMode {
             //right = gamepad1.left_stick_x;
             right = -gamepad1.left_trigger + gamepad1.right_trigger;
             clockwise = gamepad1.right_stick_x;
-            armPower = -gamepad2.right_stick_x; //arn up and down
-            liftPower = gamepad2.left_stick_y; //arm forward and backward
+            armPower = -gamepad2.right_stick_x; //arm forward and backward
+            liftPower = gamepad2.left_stick_y; //lift up and down
+
             wristPower = -gamepad2.left_stick_x; //move wrist up and down
 
 
@@ -104,7 +107,8 @@ public class teleOpSimpleMecanum extends LinearOpMode {
             CurrFoundReleaseStateA = gamepad2.a;
             CurrFoundGrabStateB = gamepad2.b;
 
-
+            CurrCapstoneOpenX = gamepad1.x;
+            CurrCapstoneCloseY = gamepad1.y;
 
             // Add a tuning constant "K" to tune rotate axis sensitivity
             k = .6;
@@ -146,9 +150,16 @@ public class teleOpSimpleMecanum extends LinearOpMode {
             utility.armMotor.setPower(armPower); //Extend and contract the arm
             utility.wristMotor.setPower(wristPower);
 
+            //Turn wrist up and down
+            int CurPos = utility.wristMotor.getCurrentPosition();
+            utility.wristPosition(wristPower);
 
             // Update Telemetry
             telemetry.addData(">", "Press Stop to end test.");
+
+            if (gamepad2.right_bumper) {
+                utility.wristFlat(.5);
+            }
 
             if (gamepad1.a) {
                 telemetry.addLine("Button A is pressed");
@@ -186,14 +197,14 @@ public class teleOpSimpleMecanum extends LinearOpMode {
             PrevFoundReleaseStateA = CurrFoundReleaseStateA;
 
             CurrClampCloseX = gamepad2.x;
-            if ((CurrClampCloseX == true) && (CurrClampCloseX != PrevClampCloseX)) {
+            if ((CurrClampCloseX == true) && (CurrClampCloseX != PrevclampCloseX)) {
 
                 // When the "X" button is pressed, close clamp
 
                 utility.closeClamp();
 
             }
-            PrevClampCloseX = CurrClampCloseX;
+            PrevclampCloseX = CurrClampCloseX;
 
             CurrClampOpenY = gamepad2.y;
             if ((CurrClampOpenY == true) && (CurrClampOpenY != PrevClampOpenY)) {
@@ -203,6 +214,27 @@ public class teleOpSimpleMecanum extends LinearOpMode {
                 utility.openClamp();
             }
             PrevClampOpenY = CurrClampOpenY;
+
+            CurrCapstoneOpenX = gamepad1.x;
+            if ((CurrCapstoneOpenX == true) && (CurrCapstoneOpenX != PrevCapstoneOpenX)) {
+
+                // When the x button is pressed on gamepad1, release the capstone
+
+                utility.capstoneOpen();
+            }
+            PrevCapstoneOpenX = CurrCapstoneOpenX;
+
+            CurrCapstoneCloseY = gamepad1.y;
+            if((CurrCapstoneCloseY == true) && (CurrCapstoneCloseY != PrevCapstoneCloseY)) {
+
+                //When the "Y" button is pressed on gamepad1, return the capstone holder to starting position
+
+                utility.capstoneClose();
+            }
+            PrevCapstoneCloseY = CurrCapstoneCloseY;
+
+
+
 
             telemetry.update();
             idle();

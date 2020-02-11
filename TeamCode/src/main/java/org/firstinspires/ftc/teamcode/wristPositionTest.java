@@ -29,70 +29,51 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
  * This is sample code used to explain how to write an autonomous code
  *
  */
-// Starting at the edge of the blue depot
 
-@Autonomous(name="RedSkystonAuto", group="Pushbot")
-//@Disabled
-public class RedSkystoneAuto extends LinearOpMode {
+@TeleOp(name="Not this one either", group="Teleop")
+@Disabled
+public class wristPositionTest extends LinearOpMode {
+
+    double wristPower;
 
     /* Declare OpMode members. */
-    HardwareJoeBot2019 robot = new HardwareJoeBot2019();   // Use a Pushbot's hardware
+    HardwareJoeBot2019      robot   = new HardwareJoeBot2019();   // Use a Pushbot's hardware
     Robot8513 utility = new Robot8513();
-    Image_Recognition I = new Image_Recognition();
-
-    double xValue;
-    double yValue;
-
-
-    private ElapsedTime runtime = new ElapsedTime();
+    private ElapsedTime     runtime = new ElapsedTime();
 
 
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
 
         telemetry.addLine("Press > to Start");
-        telemetry.update();
+       // telemetry.update();
 
         robot.init(hardwareMap, this);
         utility.init(hardwareMap, this);
 
         waitForStart();
 
-        robot.moveInches(18, .5, 5);
+        while (opModeIsActive()) {
 
-        double coords[] = I.skystone_cooridinates();
-        ///Distance from skystone
-        ///    coords[0]
-        //Amount off center of skystone
-        ///    coords[1]
-
-        if (coords[0] == 777) {
-            robot.moveInches(2.5, .5, 5);
-            coords = I.skystone_cooridinates();
+            wristPower = -gamepad2.left_stick_x;
+            utility.wristMotor.setPower(wristPower);
 
 
-
+            telemetry.addData("Current position is:", utility.wristMotor.getCurrentPosition());
+            telemetry.update();
         }
 
-        else {
-            yValue = coords[1]/25.4;
-            xValue = coords[0]/25.4;
-            robot.moveRobot(0, yValue, 0);
-            utility.ExtendArmInches(xValue + 1.5, .3);
-            utility.closeClamp();
-            robot.moveInches(20, .5, 5);
-            robot.moveRobot(0, 27, 0);
-            utility.openClamp();
 
-        }
 
     }
+
 }

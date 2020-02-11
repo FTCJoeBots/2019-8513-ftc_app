@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -25,12 +26,13 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * List of issues at Comp(1)-> https://docs.google.com/a/stjoebears.com/spreadsheets/d/1r_liipKBU7GHfONdxq9E6d4f7zikcCuXwDL2bsQfwm0/edit?usp=sharing
  *G-Sheet of time VS Heading for autonomous -> https://docs.google.com/a/stjoebears.com/spreadsheets/d/1pqv0iN94fFd5KvX1YIWP7z39HgpURXsscn0zPujs1q4/edit?usp=sharing
  */
-@TeleOp(name="Servo TeleOp Test", group="TeleOp")
-
+@TeleOp(name="Not this one", group="TeleOp")
+@Disabled
 public class servoTest extends LinearOpMode {
 
     double clampServoPos = 0.3;
     double foundationServoPos = 0.3;
+    double capstoneServoPos = 0.3;
 
     HardwareJoeBot2019 robot = new HardwareJoeBot2019();
     Robot8513 utility = new Robot8513();
@@ -102,7 +104,7 @@ public class servoTest extends LinearOpMode {
                 telemetry.addLine("Neither button is pressed on pad 2");
             }
 
-            telemetry.addData("clamp servo", clampServoPos);
+            telemetry.addData("capstone servo", clampServoPos);
             telemetry.addData("foundation servo", foundationServoPos);
             telemetry.update();
 

@@ -30,8 +30,8 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -39,13 +39,14 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  *
  */
 
-@Autonomous(name="Sample 1", group="Pushbot")
-@Disabled
-public class autoDriveSample2 extends LinearOpMode {
+@Autonomous(name="RedEverythingAuto", group="Pushbot")
+//@Disabled
+public class RedEverythingAuto extends LinearOpMode {
 
     /* Declare OpMode members. */
-    HardwareJoeBot2018      robot   = new HardwareJoeBot2018();   // Use a Pushbot's hardware
-    private ElapsedTime     runtime = new ElapsedTime();
+    HardwareJoeBot2019 robot = new HardwareJoeBot2019();   // Use a Pushbot's hardware
+    Robot8513 utility = new Robot8513();
+    private ElapsedTime runtime = new ElapsedTime();
 
 
     @Override
@@ -54,21 +55,31 @@ public class autoDriveSample2 extends LinearOpMode {
         telemetry.addLine("Press > to Start");
         telemetry.update();
 
-        robot.init(hardwareMap,this);
+        robot.init(hardwareMap, this);
+        utility.init(hardwareMap, this);
 
         waitForStart();
 
-        //Move forward 12 inches
+        robot.moveInches(31, .3, 7);
+        sleep(800);
+        utility.closeClamp();
+        sleep(500);
+        robot.moveInches(-13, .5, 7);
+        sleep(800);
+        robot.strafeSeconds(1500, 0.5);
+        sleep(700);
+        utility.openClamp();
+        sleep(500);
+        robot.moveInches(-7, 0.5, 5);
+        robot.strafeSeconds(800, -0.5);
+        utility.wristMotor.setTargetPosition(0);
+        utility.wristMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        utility.wristMotor.setPower(0.5);
 
-        robot.moveInches(12, 0.5, 5);
-        robot.rotate(90,.25);
-
-
-        telemetry.addLine("We're done. Press stop.");
-        telemetry.update();
-
-
+        while (opModeIsActive() && utility.wristMotor.isBusy()) {
+            telemetry.addData("Wrist Motor Position: ", "%5d", utility.wristMotor.getCurrentPosition());
+            telemetry.update();
+        }
 
     }
-
 }
